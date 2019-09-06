@@ -24,9 +24,9 @@
       <el-table-column prop="nickName"
                        label="昵称"
                        width="200"></el-table-column>
-      <el-table-column prop="balance"
+      <!-- <el-table-column prop="balance"
                        label="余额"
-                       width="150"></el-table-column>
+                       width="150"></el-table-column> -->
       <el-table-column prop="phone"
                        label="电话"
                        width="150"></el-table-column>

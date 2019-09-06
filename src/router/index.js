@@ -115,6 +115,34 @@ export const constantRoutes = [{
             }
         ]
     },
+    // 入学评估
+    {
+        path: '/assessment',
+        component: Layout,
+        redirect: '/assessment/list',
+        name: 'Assessment',
+        meta: {
+            title: '入学评估',
+            icon: 'tree'
+        },
+        children: [{
+                path: 'list',
+                name: 'List',
+                component: () =>
+                    import ('@/views/assessment/assessment'),
+                meta: {
+                    title: '评估列表',
+                    icon: 'dashboard'
+                }
+            },
+            {
+                path: 'put/:id',
+                name: 'Put',
+                component: () =>
+                    import ('@/views/assessment/put')
+            }
+        ]
+    },
     // 教师
     {
         path: '/teacher',
@@ -197,28 +225,18 @@ export const constantRoutes = [{
         component: Layout,
         redirect: '/system/msg',
         meta: {
-            title: '系统管理',
+            title: '轮播图',
             icon: 'tree'
         },
         children: [{
-                path: 'flashView',
-                component: () =>
-                    import ('@/views/flashView/list'),
-                meta: {
-                    title: '轮播图',
-                    icon: 'dashboard'
-                }
-            },
-            {
-                path: 'flashView',
-                component: () =>
-                    import ('@/views/flashView/list'),
-                meta: {
-                    title: '轮播图',
-                    icon: 'dashboard'
-                }
+            path: 'flashView',
+            component: () =>
+                import ('@/views/flashView/list'),
+            meta: {
+                title: '轮播图',
+                icon: 'dashboard'
             }
-        ]
+        }]
     },
 
     // product

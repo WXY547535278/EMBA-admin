@@ -8,7 +8,7 @@ export function getTeacher(id) {
 }
 
 /**
- * 获取课程列表
+ * 获取教师列表
  * @param {obj} data 查询条件
  */
 export function getTeacherList(query) {
