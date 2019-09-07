@@ -12,10 +12,18 @@ export function getInformation(id) {
  * @param {obj} data 查询条件
  */
 export function getInformationList(query) {
+    var url = '/information?init=true&' + 'pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize
+        // if (query.title) {
+        //     url += '&title=' + query.title
+        // }
     return request({
-        url: '/information?init=true&' + 'pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize,
-        method: 'get'
-    })
+            url: url,
+            method: 'get'
+        })
+        // return request({
+        //     url: '/information?init=true&' + 'pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize,
+        //     method: 'get'
+        // })
 }
 
 // 新增

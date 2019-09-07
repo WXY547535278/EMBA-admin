@@ -65,7 +65,6 @@
                   type="textarea"
                   :autosize="{ minRows: 6, maxRows: 40 }" />
       </el-form-item>
-
       <hr>
       <el-form-item>
         <el-button type="primary"
@@ -130,13 +129,14 @@ export default {
         this.form.survey = res.data.survey
         this.form.price = res.data.price
         this.form.introduce = res.data.introduce
+        this.form.free = res.data.free
       }).catch((res) => {
         this.$message({
           type: 'warning',
           message: '参数错误'
         })
         this.$router.push({ path: '/tutorClass/list' })
-      });
+      })
     },
 
     //返回上一页

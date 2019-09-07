@@ -1,21 +1,18 @@
 <template>
   <div style="width:90%;margin-left:5%;margin-top:1%">
     <!-- 搜索条件区域 -->
-
-    <!-- <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="姓名">
-            <el-input v-model="formInline.username" placeholder="姓名"></el-input>
-        </el-form-item>
-        <el-form-item label="用户类型">
-            <el-select v-model="formInline.region" placeholder="用户类型">
-            <el-option label="普通用户" value="1"></el-option>
-            <el-option label="VIP" value="2"></el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
-        </el-form-item>
-    </el-form> -->
+    <el-form :inline="true"
+             :model="formInline"
+             class="demo-form-inline">
+      <el-form-item label="用户openid">
+        <el-input v-model="openid"
+                  placeholder="openid"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary"
+                   @click="onSubmit">查询</el-button>
+      </el-form-item>
+    </el-form>
 
     <el-table :data="tableData">
       <el-table-column prop="openid"
@@ -41,8 +38,6 @@
       <el-table-column prop="address"
                        label="用户地址"
                        width="170"></el-table-column>
-      <el-table-column label="注册时间"
-                       width="180"><template slot-scope="scope">{{parseTime(scope.row.time)}}</template></el-table-column>
       <!--      <el-table-column fixed="right" label="操作" width="120">-->
       <!--        -->
       <!--      </el-table-column>-->
@@ -80,8 +75,9 @@ export default {
       },
       pageindex: 0, // 当前页
       pageSize: 10, // 每页数量
-      total: 0 // 数量总条数
+      total: 0, // 数量总条数
       // 搜索内容
+      openid: null
     }
   },
 
@@ -108,12 +104,14 @@ export default {
     },
     // 搜索
     onSubmit () {
+      this.getUserList()
     },
     // 获取用户列表
     getUserList () {
       let query = {
         pageIndex: this.pageindex,
-        pageSize: this.pageSize
+        pageSize: this.pageSize,
+        openid: this.openid
       }
       getUserList(query).then(res => {
         // console.log(res)

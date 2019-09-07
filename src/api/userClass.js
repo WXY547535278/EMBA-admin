@@ -1,23 +1,28 @@
 import request from '@/utils/request'
 
-export function getCurriculum(id) {
+export function getOrder(id) {
     return request({
-        url: '/curriculum/' + id,
+        url: '/order/' + id,
         method: 'get'
     })
 }
 
 /**
+ * 获取登陆用户的信息
+ * @param {*} query
+ */
+
+/**
  * 获取课程列表
  * @param {obj} data 查询条件
  */
-export function getCurriculumList(query) {
-    var url = '/curriculum?init=true&' + 'pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize
+export function getOrderList(query) {
+    var url = '/order?init=true&' + 'pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize
     if (query.openid) {
         url += '&openid=' + query.openid
     }
-    if (query.name) {
-        url += '&name=' + query.name
+    if (query.obj) {
+        url += '&obj=' + query.obj
     }
     return request({
         url: url,
@@ -26,25 +31,25 @@ export function getCurriculumList(query) {
 }
 
 // 新增
-export function postCurriculum(data) {
+export function postOrder(data) {
     return request({
-        url: '/curriculum',
+        url: '/order',
         method: 'post',
         data: data
     })
 }
 // 修改
-export function putCurriculum(data) {
+export function putOrder(data) {
     return request({
-        url: '/curriculum',
+        url: '/order',
         method: 'put',
         data: data
     })
 }
 // 删除
-export function deleteCurriculum(id) {
+export function deleteOrder(id) {
     return request({
-        url: '/curriculum/' + id,
+        url: '/order/' + id,
         method: 'delete'
     })
 }

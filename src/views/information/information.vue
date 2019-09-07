@@ -1,10 +1,23 @@
 <template>
   <div style="width:90%;margin-left:5%;margin-top:1%">
-    <!-- 搜索条件区域 -->
+    <!-- 搜索条件区域
+    <el-form :inline="true"
+             :model="formInline"
+             class="demo-form-inline">
+      <el-form-item label="标题">
+        <el-input v-model="title"
+                  placeholder="title"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary"
+                   @click="onSubmit">查询</el-button>
+      </el-form-item>
+    </el-form> -->
 
+    <!-- 新增 -->
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
       <el-form-item  style="float: right;">
-        <el-button type="success"    @click="toPost">新增资讯</el-button>
+        <el-button type="success" @click="toPost">新增资讯</el-button>
       </el-form-item>
     </el-form>
 
@@ -128,7 +141,8 @@
         status: null,
 
         // 搜索内容
-        openid: null//
+        // openid: null//
+        title: null
       }
     },
 
@@ -159,8 +173,9 @@
       getInformationList() {
         let query = {
           pageIndex: this.pageindex,
-          pageSize: this.pageSize,
-          openid: this.openid
+          pageSize: this.pageSize
+          // openid: this.openid,
+          // title: this.title
         }
         getInformationList(query).then(res => {
           // console.log(res)

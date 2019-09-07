@@ -219,6 +219,44 @@ export const constantRoutes = [{
             }
         ]
     },
+    // 用户课程
+    {
+        path: '/userClass',
+        component: Layout,
+        redirect: '/UserClass/list',
+        name: 'UserClass',
+        meta: {
+            title: '用户课程',
+            icon: 'tree'
+        },
+        children: [{
+                path: 'list',
+                name: 'List',
+                component: () =>
+                    import ('@/views/userClass/userClass'),
+                meta: {
+                    title: '用户课程列表',
+                    icon: 'dashboard'
+                }
+            },
+            {
+                path: 'new',
+                name: 'New',
+                component: () =>
+                    import ('@/views/userClass/new'),
+                meta: {
+                    title: '新增用户课程',
+                    icon: 'dashboard'
+                }
+            },
+            {
+                path: 'put/:id',
+                name: 'Put',
+                component: () =>
+                    import ('@/views/userClass/put')
+            }
+        ]
+    },
     // 系统管理
     {
         path: '/system',

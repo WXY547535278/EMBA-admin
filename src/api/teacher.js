@@ -12,10 +12,18 @@ export function getTeacher(id) {
  * @param {obj} data 查询条件
  */
 export function getTeacherList(query) {
+    var url = '/teacher?init=true&' + 'pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize
+    if (query.name) {
+        url += '&name=' + query.name
+    }
     return request({
-        url: '/teacher?init=true&' + 'pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize,
-        method: 'get'
-    })
+            url: url,
+            method: 'get'
+        })
+        // return request({
+        //     url: '/teacher?init=true&' + 'pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize,
+        //     method: 'get'
+        // })
 }
 
 // 新增

@@ -9,26 +9,26 @@ import request from '@/utils/request'
  * @param {obj} data 管理员信息
  */
 export function login(data) {
-  return request({
-    url: '/admin/login',
-    method: 'post',
-    data
-  })
+    return request({
+        url: '/admin/login',
+        method: 'post',
+        data
+    })
 }
 
 export function getInfo(token) {
-  return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
-  })
+    return request({
+        url: '/user/info',
+        method: 'get',
+        params: { token }
+    })
 }
 
 export function logout() {
-  return request({
-    url: '/admin/logout',
-    method: 'post'
-  })
+    return request({
+        url: '/admin/logout',
+        method: 'post'
+    })
 }
 
 /**
@@ -36,16 +36,24 @@ export function logout() {
  * @param {obj} data 查询条件
  */
 export function getUserList(query) {
-  return request({
-    url: '/user?' + 'pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize,
-    method: 'get'
-  })
+    var url = '/user?' + 'pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize
+    if (query.openid) {
+        url += '&openid=' + query.openid
+    }
+    return request({
+            url: url,
+            method: 'get'
+        })
+        // return request({
+        //   url: '/user?' + 'pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize,
+        //   method: 'get'
+        // })
 }
 
 // 删除用户
 export function delUser(unionid) {
-  return request({
-    url: '/user/' + unionid,
-    method: 'delete'
-  })
+    return request({
+        url: '/user/' + unionid,
+        method: 'delete'
+    })
 }

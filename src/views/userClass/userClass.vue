@@ -5,22 +5,27 @@
     <el-form :inline="true"
              :model="formInline"
              class="demo-form-inline">
-      <el-form-item label="姓名">
-        <el-input v-model="name"
-                  placeholder="name"></el-input>
+      <el-form-item label="用户openid">
+        <el-input v-model="openid"
+                  placeholder="openid"></el-input>
+      </el-form-item>
+      <el-form-item label="课程id">
+        <el-input v-model="obj"
+                  placeholder="obj"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary"
                    @click="onSubmit">查询</el-button>
       </el-form-item>
     </el-form>
-    <!-- 新增教师 -->
+
+    <!-- 新增课程区域 -->
     <el-form :inline="true"
              :model="formInline"
              class="demo-form-inline">
       <el-form-item style="float: right;">
         <el-button type="success"
-                   @click="toPost">新增教师</el-button>
+                   @click="toPost">新增用户课程</el-button>
       </el-form-item>
     </el-form>
 
@@ -28,27 +33,22 @@
       <el-table-column prop="id"
                        label="id"
                        width="150"></el-table-column>
-      <el-table-column prop="name"
-                       label="教师名"
+      <el-table-column prop="openid"
+                       label="用户openid"
                        width="300"></el-table-column>
-      <el-table-column label="头像"
-                       width="150">
-        <template slot-scope="scope">
-          <img v-image-preview
-               style="width: 50px; height: 50px"
-               :src="scope.row.headImg"
-               fit="fill" />
-        </template>
+      <el-table-column prop="obj"
+                       label="课程id"
+                       width="300"></el-table-column>
+      <el-table-column prop="adminId"
+                       label="操作人id"
+                       width="300"></el-table-column>
+      <el-table-column prop="adminName"
+                       label="操作人姓名"
+                       width="300"></el-table-column>
+      <el-table-column label="操作时间"
+                       width="200">
+        <template slot-scope="scope">{{parseTime(scope.row.adminTime)}}</template>
       </el-table-column>
-      <el-table-column prop="wechat"
-                       label="微信号"
-                       width="300"></el-table-column>
-      <el-table-column prop="phone"
-                       label="手机号"
-                       width="300"></el-table-column>
-      <el-table-column prop="mail"
-                       label="邮箱"
-                       width="300"></el-table-column>
 
       <el-table-column fixed="right"
                        label="操作"
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { getTeacherList, deleteTeacher } from "@/api/teacher"
+import { getOrderList, deleteOrder } from "@/api/userClass"
 import { parseTime } from "@/utils/index"
 
 export default {
@@ -100,14 +100,14 @@ export default {
       status: null,
 
       // 搜索内容
-      // openid: null
-      name: null
+      openid: null,
+      // name: null,
+      obj: null
     }
   },
 
-
   mounted () {
-    this.getTeacherList()
+    this.getOrderList()
   },
   created () {
   },
@@ -117,27 +117,28 @@ export default {
     // 选择当前页面显示多少条数据的选择框发生改变
     handleSizeChange (e) {
       this.pageSize = e
-      this.getTeacherList()
+      this.getOrderList()
     },
     // 分页改变 e点击的页码  用户手动输入了页面然后go
     handleCurrentChange (e) {
       // console.log('当前页码', e)
       this.pageindex = e - 1
-      this.getTeacherList()
+      this.getOrderList()
     },
     // 搜索
     onSubmit () {
-      this.getTeacherList()
+      this.getOrderList()
     },
 
-    getTeacherList () {
+    getOrderList () {
       let query = {
         pageIndex: this.pageindex,
         pageSize: this.pageSize,
-        name: this.name
+        openid: this.openid,
+        obj: this.obj
       }
-      getTeacherList(query).then(res => {
-        console.log(res)
+      getOrderList(query).then(res => {
+        // console.log(res)
         this.tableData = res.data
         this.total = res.pageTotal
       })
@@ -149,18 +150,18 @@ export default {
 
     // 删除资讯
     deleteThis (id) {
-      deleteTeacher(id).then(res => {
+      deleteOrder(id).then(res => {
         if (res.code === '200') {
           this.$message({
             type: 'success',
             message: '操作成功!'
           })
-          this.getTeacherList()
+          this.getOrderList();
         } else {
           this.$message({
             type: 'warning',
             message: '操作失败'
-          })
+          });
         }
       })
     },

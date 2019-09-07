@@ -2,7 +2,24 @@
   <!-- 资讯列表 -->
   <div style="width:90%;margin-left:5%;margin-top:1%">
     <!-- 搜索条件区域 -->
+    <el-form :inline="true"
+             :model="formInline"
+             class="demo-form-inline">
+      <!-- <el-form-item label="用户openid">
+        <el-input v-model="openid"
+                  placeholder="openid"></el-input>
+      </el-form-item> -->
+      <el-form-item label="课程名">
+        <el-input v-model="name"
+                  placeholder="name"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary"
+                   @click="onSubmit">查询</el-button>
+      </el-form-item>
+    </el-form>
 
+    <!-- 新增课程区域 -->
     <el-form :inline="true"
              :model="formInline"
              class="demo-form-inline">
@@ -95,10 +112,10 @@ export default {
       status: null,
 
       // 搜索内容
-      openid: null//
+      openid: null,
+      name: null
     }
   },
-
 
   mounted () {
     this.getCurriculumList()
@@ -128,7 +145,8 @@ export default {
       let query = {
         pageIndex: this.pageindex,
         pageSize: this.pageSize,
-        openid: this.openid
+        openid: this.openid,
+        name: this.name
       }
       getCurriculumList(query).then(res => {
         // console.log(res)
