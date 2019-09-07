@@ -16,8 +16,8 @@ export function getVedioList(query) {
     if (query.curriculumId) {
         url += '&curriculumId=' + query.curriculumId
     }
-    if (query.id) {
-        url += '&id=' + query.id
+    if (query.chapterId) {
+        url += '&chapterId=' + query.chapterId
     }
     return request({
             url: url,

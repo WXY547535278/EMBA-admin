@@ -10,8 +10,8 @@
                   placeholder="curriculumId"></el-input>
       </el-form-item>
       <el-form-item label="章节id">
-        <el-input v-model="id"
-                  placeholder="id"></el-input>
+        <el-input v-model="chapterId"
+                  placeholder="chapterId"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary"
@@ -30,15 +30,20 @@
 
     <el-table :data="tableData">
       <el-table-column prop="id"
+                       label="视频id"
+                       width="150"></el-table-column>
+      <el-table-column prop="chapterId"
                        label="章节id"
                        width="150"></el-table-column>
       <el-table-column prop="curriculumId"
                        label="课程id"
                        width="300"></el-table-column>
       <el-table-column prop="name"
-                       label="章节名称"
+                       label="视频名称"
                        width="300"></el-table-column>
-
+      <el-table-column prop="video"
+                       label="视频"
+                       width="300"></el-table-column>
       <el-table-column fixed="right"
                        label="操作"
                        width="120">
@@ -70,7 +75,7 @@
 </template>
 
 <script>
-import { getChapterList, deleteChapter } from "@/api/chapter"
+import { getVedioList, deleteVedio } from "@/api/vedio"
 import { parseTime } from "@/utils/index"
 
 export default {
@@ -91,12 +96,12 @@ export default {
       // 搜索内容
       // openid: null
       curriculumId: null,
-      id: null
+      chapterId: null
     }
   },
 
   mounted () {
-    this.getChapterList()
+    this.getVedioList()
   },
   created () {
   },
@@ -106,27 +111,27 @@ export default {
     // 选择当前页面显示多少条数据的选择框发生改变
     handleSizeChange (e) {
       this.pageSize = e
-      this.getChapterList()
+      this.getVedioList()
     },
     // 分页改变 e点击的页码  用户手动输入了页面然后go
     handleCurrentChange (e) {
       // console.log('当前页码', e)
       this.pageindex = e - 1
-      this.getChapterList()
+      this.getVedioList()
     },
     // 搜索
     onSubmit () {
-      this.getChapterList()
+      this.getVedioList()
     },
 
-    getChapterList () {
+    getVedioList () {
       let query = {
         pageIndex: this.pageindex,
         pageSize: this.pageSize,
         curriculumId: this.curriculumId,
-        id: this.id
+        chapterId: this.id
       }
-      getChapterList(query).then(res => {
+      getVedioList(query).then(res => {
         console.log(res)
         this.tableData = res.data
         this.total = res.pageTotal
@@ -139,13 +144,13 @@ export default {
 
     // 删除资讯
     deleteThis (id) {
-      deleteChapter(id).then(res => {
+      deleteVedio(id).then(res => {
         if (res.code === '200') {
           this.$message({
             type: 'success',
             message: '操作成功!'
           })
-          this.getChapterList()
+          this.getVedioList()
         } else {
           this.$message({
             type: 'warning',
