@@ -257,7 +257,7 @@ export const constantRoutes = [{
             }
         ]
     },
-    // 系统管理
+    // 轮播图
     {
         path: '/system',
         component: Layout,
@@ -276,7 +276,82 @@ export const constantRoutes = [{
             }
         }]
     },
-
+    // 视频章节
+    {
+        path: '/chapter',
+        component: Layout,
+        redirect: '/Chapter/list',
+        name: 'Chapter',
+        meta: {
+            title: '视频章节',
+            icon: 'tree'
+        },
+        children: [{
+                path: 'list',
+                name: 'List',
+                component: () =>
+                    import ('@/views/chapter/chapter'),
+                meta: {
+                    title: '视频章节列表',
+                    icon: 'dashboard'
+                }
+            },
+            {
+                path: 'new',
+                name: 'New',
+                component: () =>
+                    import ('@/views/chapter/new'),
+                meta: {
+                    title: '新增视频章节',
+                    icon: 'dashboard'
+                }
+            },
+            {
+                path: 'put/:id',
+                name: 'Put',
+                component: () =>
+                    import ('@/views/chapter/put')
+            }
+        ]
+    },
+    // 视频
+    {
+        path: '/vedio',
+        component: Layout,
+        redirect: '/Vedio/list',
+        name: 'Vedio',
+        meta: {
+            title: '视频',
+            icon: 'tree'
+        },
+        children: [{
+                path: 'list',
+                name: 'List',
+                component: () =>
+                    import ('@/views/vedio/vedio'),
+                meta: {
+                    title: '视频列表',
+                    icon: 'dashboard'
+                }
+            },
+            {
+                path: 'new',
+                name: 'New',
+                component: () =>
+                    import ('@/views/vedio/new'),
+                meta: {
+                    title: '新增视频',
+                    icon: 'dashboard'
+                }
+            },
+            {
+                path: 'put/:id',
+                name: 'Put',
+                component: () =>
+                    import ('@/views/vedio/put')
+            }
+        ]
+    },
     // product
     {
         path: '/product',
