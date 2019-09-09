@@ -382,6 +382,49 @@ export const constantRoutes = [{
         ]
     },
 
+    // 添加面试、笔试、题库
+    {
+        path: '/subject',
+        component: Layout,
+        redirect: '/Subject/list',
+        name: 'Subject',
+        meta: {
+            title: '面试/笔试/题库',
+            icon: 'tree'
+        },
+        children: [{
+                path: 'subjects',
+                name: 'Subjects',
+                component: () =>
+                    import ('@/views/subject/subjects'),
+                meta: {
+                    title: '题库',
+                    icon: 'dashboard'
+                }
+            },
+            {
+                path: 'interview',
+                name: 'Interview',
+                component: () =>
+                    import ('@/views/subject/interview'),
+                meta: {
+                    title: '面试',
+                    icon: 'dashboard'
+                }
+            },
+            {
+                path: 'write',
+                name: 'Write',
+                component: () =>
+                    import ('@/views/subject/write'),
+                meta: {
+                    title: '笔试',
+                    icon: 'dashboard'
+                }
+            }
+        ]
+    },
+
     // 404 page must be placed at the end !!!
     {
         path: '*',

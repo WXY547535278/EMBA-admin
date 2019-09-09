@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
-export function getFlashView(id) {
+export function getSubject(id) {
     return request({
-        url: '/flashView/' + id,
+        url: '/subject/' + id,
         method: 'get'
     })
 }
@@ -11,8 +11,8 @@ export function getFlashView(id) {
  * 获取用户列表
  * @param {obj} data 查询条件
  */
-export function getFlashViewList(query) {
-    var url = '/flashView?pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize
+export function getSubjectList(query) {
+    var url = '/subject?pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize
     if (query.type) {
         url += '&type=' + query.type
     }
@@ -23,25 +23,25 @@ export function getFlashViewList(query) {
 }
 
 // 新增
-export function postFlashView(data) {
+export function postSubject(data) {
     return request({
-        url: '/flashView',
+        url: '/subject',
         method: 'post',
         data: data
     })
 }
 // 修改
-export function putFlashView(data) {
+export function putSubject(data) {
     return request({
-        url: '/flashView',
+        url: '/subject',
         method: 'put',
         data: data
     })
 }
 // 删除
-export function deleteFlashView(id) {
+export function deleteSubject(id) {
     return request({
-        url: '/flashView/' + id,
+        url: '/subject/' + id,
         method: 'delete'
     })
 }
