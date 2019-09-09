@@ -6,37 +6,46 @@
       <el-form-item label="所属课程id"
                     :rules="[{ required: true, message: '不能为空'}]">
         <el-input v-model="form.curriculumId"
-                  type="text" />
+                  type="text"
+                  style="width:300px" />
       </el-form-item>
       <el-form-item label="所属章节id "
                     :rules="[{ required: true, message: '不能为空'}]">
         <el-input v-model="form.chapterId"
-                  type="text" />
+                  type="text"
+                  style="width:300px" />
       </el-form-item>
       <el-form-item label="视频名称"
                     :rules="[{ required: true, message: '不能为空'}]">
         <el-input v-model="form.name"
-                  type="text" />
+                  type="text"
+                  style="width:300px" />
       </el-form-item>
 
-      <!-- <el-form-item label="视频"
-                    :rules="[{ required: true, message: '头像不能为空'}]">
-        <img style="width: 200px; height: 200px"
-             :src="form.video"
-             fit="fill" />
-        <el-upload class="upload-demo"
+      <!-- action必选参数, 上传的地址 -->
+      <el-form-item label="视频上传"
+                    :rules="[{ required: true, message: '不能为空'}]">
+        <el-upload class="avatar-uploader el-upload--text"
                    :action="upload_url"
+                   :file-list="false"
                    :headers="upload_head"
-                   :multiple=false
                    :limit=1
-                   :on-success="upload_success_banner"
-                   :file-list="fileList">
-          <el-button size="small"
-                     type="primary">点击上传</el-button>
-          <div slot="tip"
-               class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                   :on-success="upload_success_video"
+                   :before-upload="beforeUploadVideo"
+                   :on-progress="uploadVideoProcess">
+          <video v-if="form.video !='' && videoFlag == false"
+                 :src="form.video"
+                 class="avatar"
+                 controls="controls">您的浏览器不支持视频播放</video>
+          <i v-else-if="form.video =='' && videoFlag == false"
+             class="el-icon-plus avatar-uploader-icon"></i>
+          <el-progress v-if="videoFlag == true"
+                       type="circle"
+                       :percentage="videoUploadPercent"
+                       style="margin-top:30px;"></el-progress>
         </el-upload>
-      </el-form-item> -->
+        <P class="text">支持mp4,3gp,m3u8格式</P>
+      </el-form-item>
 
       <hr>
       <el-form-item>
@@ -52,11 +61,11 @@ import { postVedio } from "@/api/vedio";
 import { getRequestUrl } from '@/utils/index'
 import { getToken } from '@/utils/auth.js'
 
-
 export default {
   data () {
     return {
-      upload_url: getRequestUrl() + "upload/picUpload",  //请求的url
+      upload_url: 'http://cloud.weiwochina.com/zuul/emba/upload/picUpload',  //请求的url
+      // upload_url: getRequestUrl() + "upload/picUpload",  //请求的url
       upload_head: {
         Authorization: getToken()
       }, // 上传请求头
@@ -65,14 +74,15 @@ export default {
         curriculumId: null,
         chapterId: null,
         name: null,
-        video: "123"
+        video: null
       },
-      fileList: []
+      fileList: [],
+      videoFlag: true,
+      videoUploadPercent: 0
     }
   },
 
   methods: {
-
 
     onSubmit () {
       console.log(this.form)
@@ -90,18 +100,46 @@ export default {
       })
     },
 
-    //处理banner上传图片
-    upload_success_banner (response, file, fileList) {
+    // 验证视频格式和视频大小
+    beforeUploadVideo (file) {
+      // const isLt10M = file.size / 1024 / 1024 < 10;
+      if (['video/mp4', 'video/3gp', 'video/m3u8'].indexOf(file.type) == -1) {
+        this.$message.error('请上传正确的视频格式')
+        return false;
+      }
+      // if (!isLt10M) {
+      //   this.$message.error('上传视频大小不能超过10MB哦!');
+      //   return false;
+      // }
+    },
+    // 上传进度显示
+    uploadVideoProcess (event, file, fileList) {
+      console.log(file)
+      this.videoFlag = true;
+      this.videoUploadPercent = 100
+    },
+    //处理上传视频
+    upload_success_video (response, file, fileList) {
       if (file.response.code == 200) {
+        console.log(file.response.data)
         this.fileList = []
-        this.form.headImg = file.response.data
+        this.form.video = file.response.data
       } else {
-        this.$message.error('上传错误!请重试');
+        console.log(file.response.data)
+        this.$message.error('上传错误!请重试')
       }
     }
   },
+  // upload_success_put (response, file, fileList) {
+  //   if (file.response.code === '200') {
+  //     this.fileList = []
+  //     this.putForm.img = file.response.data;
+  //   } else {
+  //     this.$message.error('上传错误!请重试');
+  //   }
+  // },
   computed: {}
-};
+}
 </script>
 
 <style scoped>

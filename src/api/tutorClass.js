@@ -13,11 +13,11 @@ export function getCurriculum(id) {
  */
 export function getCurriculumList(query) {
     var url = '/curriculum?init=true&' + 'pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize
-    if (query.openid) {
-        url += '&openid=' + query.openid
-    }
     if (query.name) {
         url += '&name=' + query.name
+    }
+    if (query.id) {
+        url += '&id=' + query.id
     }
     return request({
         url: url,

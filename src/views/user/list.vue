@@ -4,9 +4,17 @@
     <el-form :inline="true"
              :model="formInline"
              class="demo-form-inline">
-      <el-form-item label="用户openid">
+      <el-form-item label="openid">
         <el-input v-model="openid"
                   placeholder="openid"></el-input>
+      </el-form-item>
+      <el-form-item label="姓名">
+        <el-input v-model="name"
+                  placeholder="姓名"></el-input>
+      </el-form-item>
+      <el-form-item label="电话号码">
+        <el-input v-model="phone"
+                  placeholder="电话号码"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary"
@@ -26,6 +34,9 @@
                        width="150"></el-table-column> -->
       <el-table-column prop="phone"
                        label="电话"
+                       width="150"></el-table-column>
+      <el-table-column prop="name"
+                       label="真实姓名"
                        width="150"></el-table-column>
       <el-table-column label="头像"
                        width="150">
@@ -77,7 +88,9 @@ export default {
       pageSize: 10, // 每页数量
       total: 0, // 数量总条数
       // 搜索内容
-      openid: null
+      name: null,
+      openid: null,
+      phone: null
     }
   },
 
@@ -111,7 +124,9 @@ export default {
       let query = {
         pageIndex: this.pageindex,
         pageSize: this.pageSize,
-        openid: this.openid
+        name: this.name,
+        openid: this.openid,
+        phone: this.phone
       }
       getUserList(query).then(res => {
         // console.log(res)

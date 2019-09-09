@@ -24,7 +24,7 @@
              class="demo-form-inline">
       <el-form-item style="float: right;">
         <el-button type="success"
-                   @click="toPost">新增章节</el-button>
+                   @click="toPost">新增视频</el-button>
       </el-form-item>
     </el-form>
 
@@ -40,6 +40,9 @@
                        width="300"></el-table-column>
       <el-table-column prop="name"
                        label="视频名称"
+                       width="300"></el-table-column>
+      <el-table-column prop="sort"
+                       label="排序"
                        width="300"></el-table-column>
       <el-table-column prop="video"
                        label="视频"

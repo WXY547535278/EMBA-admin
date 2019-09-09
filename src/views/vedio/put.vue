@@ -19,44 +19,52 @@
                   :disabled="true" />
       </el-form-item>
 
-      <el-form-item label="教师姓名"
+      <el-form-item label="用户id"
                     :rules="[{ required: true, message: '姓名不能为空'}]">
-        <el-input v-model="form.name"
+        <el-input v-model="form.curriculumId"
                   type="text" />
       </el-form-item>
 
-      <el-form-item label="头像"
-                    :rules="[{ required: true, message: '头像不能为空'}]">
-        <img style="width: 200px; height: 200px"
-             :src="form.headImg"
-             fit="fill" />
-        <el-upload class="upload-demo"
+      <el-form-item label="章节id"
+                    :rules="[{ required: true, message: '不能为空'}]">
+        <el-input v-model="form.chapterId"
+                  type="text" />
+      </el-form-item>
+      <el-form-item label="视频名称"
+                    :rules="[{ required: true, message: '不能为空'}]">
+        <el-input v-model="form.name"
+                  type="text" />
+      </el-form-item>
+      <el-form-item label="排序"
+                    :rules="[{ required: true, message: '不能为空'}]">
+        <el-input v-model="form.sort"
+                  type="text" />
+      </el-form-item>
+
+      <!-- action必选参数, 上传的地址 -->
+      <el-form-item label="视频上传"
+                    :rules="[{ required: true, message: '不能为空'}]">
+        <el-upload class="avatar-uploader el-upload--text"
                    :action="upload_url"
+                   :file-list="false"
                    :headers="upload_head"
-                   :multiple=false
                    :limit=1
-                   :on-success="upload_success_banner"
-                   :file-list="fileList">
-          <el-button size="small"
-                     type="primary">点击上传</el-button>
-          <div slot="tip"
-               class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                   :on-success="upload_success_video"
+                   :before-upload="beforeUploadVideo"
+                   :on-progress="uploadVideoProcess">
+          <video v-if="form.video !='' && videoFlag == false"
+                 :src="form.video"
+                 class="avatar"
+                 controls="controls">您的浏览器不支持视频播放</video>
+          <i v-else-if="form.video =='' && videoFlag == false"
+             class="el-icon-plus avatar-uploader-icon"></i>
+          <el-progress v-if="videoFlag == true"
+                       type="circle"
+                       :percentage="videoUploadPercent"
+                       style="margin-top:30px;"></el-progress>
         </el-upload>
-      </el-form-item>
-      <el-form-item label="微信号"
-                    :rules="[{ required: true, message: '不能为空'}]">
-        <el-input v-model="form.wechat"
-                  type="text" />
-      </el-form-item>
-      <el-form-item label="电话"
-                    :rules="[{ required: true, message: '不能为空'}]">
-        <el-input v-model="form.phone"
-                  type="text" />
-      </el-form-item>
-      <el-form-item label="邮箱"
-                    :rules="[{ required: true, message: '内容不能为空'}]">
-        <el-input v-model="form.mail"
-                  type="text" />
+        <P class="text">支持mp4,3gp,m3u8格式</P>
+
       </el-form-item>
 
       <hr>
@@ -69,7 +77,7 @@
 </template>
 
 <script>
-import { getTeacher, putTeacher } from "@/api/teacher";
+import { getVedio, putVedio } from "@/api/vedio";
 import { getRequestUrl } from '@/utils/index'
 import { getToken } from '@/utils/auth.js'
 
@@ -77,69 +85,89 @@ import { getToken } from '@/utils/auth.js'
 export default {
   data () {
     return {
-      upload_url: getRequestUrl() + "upload/picUpload",  //请求的url
+      upload_url: 'http://cloud.weiwochina.com/zuul/emba/upload/picUpload',  //请求的url
+      // upload_url: getRequestUrl() + "upload/picUpload",  //请求的url
       upload_head: {
         Authorization: getToken()
       }, // 上传请求头
       stander: '',
       form: {
-        id: null,
-        // time: null,
-        headImg: null,
+        curriculumId: null,
+        chapterId: null,
         name: null,
-        wechat: null,
-        phone: null,
-        mail: null
+        video: null,
+        sort: null
       },
-      fileList: []
+      fileList: [],
+      videoFlag: true,
+      videoUploadPercent: null
     }
   },
 
   methods: {
     onSubmit () {
       console.log(this.form);
-      putTeacher(this.form).then(res => {
+      putVedio(this.form).then(res => {
         this.$message({
           type: 'success',
           message: '修改成功!'
         })
-        this.$router.push({ path: '/teacher/list' })
+        this.$router.push({ path: '/vedio/list' })
       }).catch((res) => {
         this.$message({
           type: 'warning',
           message: '修改失败'
-        });
-      });
+        })
+      })
     },
 
     init (id) {
-      getTeacher(id).then(res => {
+      getVedio(id).then(res => {
         this.form.id = res.data.id
-        this.form.headImg = res.data.headImg
+        this.form.curriculumId = res.data.curriculumId
+        this.form.chapterId = res.data.chapterId
         this.form.name = res.data.name
-        this.form.wechat = res.data.wechat
-        this.form.phone = res.data.phone
-        this.form.mail = res.data.mail
+        this.form.video = res.data.video
+        this.form.sort = res.data.sort
       }).catch((res) => {
         this.$message({
           type: 'warning',
           message: '参数错误'
         })
-        this.$router.push({ path: '/teacher/list' })
+        this.$router.push({ path: '/vedio/list' })
       });
     },
 
     //返回上一页
     toList () {
-      this.$router.push({ path: '/teacher/list' })
+      this.$router.push({ path: '/vedio/list' })
     },
 
-    //处理banner上传图片
-    upload_success_banner (response, file, fileList) {
+    // 验证视频格式和视频大小
+    beforeUploadVideo (file) {
+      // const isLt10M = file.size / 1024 / 1024 < 10;
+      if (['video/mp4', 'video/3gp', 'video/m3u8'].indexOf(file.type) == -1) {
+        this.$message.error('请上传正确的视频格式')
+        return false
+      }
+      // if (!isLt10M) {
+      //   this.$message.error('上传视频大小不能超过10MB哦!');
+      //   return false;
+      // }
+    },
+    // 上传进度显示
+    uploadVideoProcess (event, file, fileList) {
+      this.videoFlag = true
+      this.videoUploadPercent = file.percentage.toFixed(0)
+    },
+    // 处理上传视频
+    upload_success_video (response, file, fileList) {
       if (file.response.code == 200) {
+        console.log(file.response.data)
         this.fileList = []
-        this.form.headImg = file.response.data
+        this.form.video = file.response.data
       } else {
+        console.log(file.response.data)
         this.$message.error('上传错误!请重试')
       }
     }

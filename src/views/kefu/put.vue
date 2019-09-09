@@ -19,14 +19,9 @@
                   :disabled="true" />
       </el-form-item>
 
-      <el-form-item label="章节姓名"
+      <el-form-item label="客户号码"
                     :rules="[{ required: true, message: '姓名不能为空'}]">
-        <el-input v-model="form.name"
-                  type="text" />
-      </el-form-item>
-      <el-form-item label="序号"
-                    :rules="[{ required: true, message: '姓名不能为空'}]">
-        <el-input v-model="form.sort"
+        <el-input v-model="form.text"
                   type="text" />
       </el-form-item>
       <hr>
@@ -39,7 +34,7 @@
 </template>
 
 <script>
-import { getChapter, putChapter } from "@/api/chapter";
+import { getKefu, putKefu } from "@/api/kefu";
 import { getRequestUrl } from '@/utils/index'
 import { getToken } from '@/utils/auth.js'
 
@@ -54,8 +49,7 @@ export default {
       stander: '',
       form: {
         id: null,
-        name: null,
-        sort: null
+        text: null
       },
       fileList: []
     }
@@ -63,38 +57,37 @@ export default {
 
   methods: {
     onSubmit () {
-      console.log(this.form);
-      putChapter(this.form).then(res => {
+      console.log(this.form)
+      putKefu(this.form).then(res => {
         this.$message({
           type: 'success',
           message: '修改成功!'
         })
-        this.$router.push({ path: '/chapter/list' })
+        this.$router.push({ path: '/kefu/list' })
       }).catch((res) => {
         this.$message({
           type: 'warning',
           message: '修改失败'
-        });
-      });
+        })
+      })
     },
 
     init (id) {
-      getChapter(id).then(res => {
+      getKefu(id).then(res => {
         this.form.id = res.data.id
-        this.form.name = res.data.name
-        this.form.sort = res.data.sort
+        this.form.text = res.data.text
       }).catch((res) => {
         this.$message({
           type: 'warning',
           message: '参数错误'
         })
-        this.$router.push({ path: '/chapter/list' })
+        this.$router.push({ path: '/kefu/list' })
       });
     },
 
     //返回上一页
     toList () {
-      this.$router.push({ path: '/chapter/list' })
+      this.$router.push({ path: '/kefu/list' })
     },
   },
   computed: {},

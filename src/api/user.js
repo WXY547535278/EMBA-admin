@@ -20,7 +20,9 @@ export function getInfo(token) {
     return request({
         url: '/user/info',
         method: 'get',
-        params: { token }
+        params: {
+            token
+        }
     })
 }
 
@@ -37,6 +39,12 @@ export function logout() {
  */
 export function getUserList(query) {
     var url = '/user?' + 'pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize
+    if (query.name) {
+        url += '&name=' + query.name
+    }
+    if (query.phone) {
+        url += '&phone=' + query.phone
+    }
     if (query.openid) {
         url += '&openid=' + query.openid
     }

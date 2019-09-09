@@ -352,37 +352,32 @@ export const constantRoutes = [{
             }
         ]
     },
-    // product
+
+    // 添加客服
     {
-        path: '/product',
+        path: '/kefu',
         component: Layout,
-        redirect: '/product/list',
+        redirect: '/Kefu/list',
+        name: 'Kefu',
         meta: {
-            title: '产品',
+            title: '客服',
             icon: 'tree'
         },
         children: [{
                 path: 'list',
+                name: 'List',
                 component: () =>
-                    import ('@/views/product/list'),
+                    import ('@/views/kefu/kefu'),
                 meta: {
-                    title: '产品列表',
-                    icon: 'dashboard'
-                }
-            },
-            {
-                path: 'post',
-                component: () =>
-                    import ('@/views/product/new'),
-                meta: {
-                    title: '新增产品',
+                    title: '客服列表',
                     icon: 'dashboard'
                 }
             },
             {
                 path: 'put/:id',
+                name: 'Put',
                 component: () =>
-                    import ('@/views/product/put')
+                    import ('@/views/kefu/put')
             }
         ]
     },

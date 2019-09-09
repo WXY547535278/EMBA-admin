@@ -1,47 +1,15 @@
 <template>
-  <!-- 资讯列表 -->
+  <!-- 客服电话列表 -->
   <div style="width:90%;margin-left:5%;margin-top:1%">
-    <!-- 搜索条件区域 -->
-    <el-form :inline="true"
-             :model="formInline"
-             class="demo-form-inline">
-      <el-form-item label="课程id">
-        <el-input v-model="curriculumId"
-                  placeholder="curriculumId"></el-input>
-      </el-form-item>
-      <el-form-item label="章节id">
-        <el-input v-model="id"
-                  placeholder="id"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary"
-                   @click="onSubmit">查询</el-button>
-      </el-form-item>
-    </el-form>
-    <!-- 新增章节 -->
-    <el-form :inline="true"
-             :model="formInline"
-             class="demo-form-inline">
-      <el-form-item style="float: right;">
-        <el-button type="success"
-                   @click="toPost">新增章节</el-button>
-      </el-form-item>
-    </el-form>
 
     <el-table :data="tableData">
       <el-table-column prop="id"
-                       label="章节id"
+                       label="客服id"
                        width="150"></el-table-column>
-      <el-table-column prop="curriculumId"
-                       label="课程id"
-                       width="300"></el-table-column>
-      <el-table-column prop="name"
-                       label="章节名称"
-                       width="300"></el-table-column>
-      <el-table-column prop="sort"
-                       label="序号"
-                       width="300"></el-table-column>
-
+      <el-table-column prop="text"
+                       fixed="right"
+                       label="客服电话"
+                       width="600"></el-table-column>
       <el-table-column fixed="right"
                        label="操作"
                        width="120">
@@ -49,13 +17,10 @@
           <el-button @click.native.prevent="toPut(scope.row.id)"
                      type="text"
                      size="small">修改</el-button>
-          <el-button @click.native.prevent="deleteThis(scope.row.id,1)"
-                     type="text"
-                     size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <!-- 分页区 -->
+    <!-- 分页区
 
     <div class="blockpage"
          style="margin:0px auto">
@@ -67,13 +32,13 @@
                      layout="total, sizes, prev, pager, next, jumper"
                      :total="total">
       </el-pagination>
-    </div>
+    </div> -->
 
   </div>
 </template>
 
 <script>
-import { getChapterList, deleteChapter } from "@/api/chapter"
+import { getKefuList } from "@/api/kefu"
 import { parseTime } from "@/utils/index"
 
 export default {
@@ -99,7 +64,7 @@ export default {
   },
 
   mounted () {
-    this.getChapterList()
+    this.getKefuList()
   },
   created () {
   },
@@ -109,27 +74,27 @@ export default {
     // 选择当前页面显示多少条数据的选择框发生改变
     handleSizeChange (e) {
       this.pageSize = e
-      this.getChapterList()
+      this.getKefuList()
     },
     // 分页改变 e点击的页码  用户手动输入了页面然后go
     handleCurrentChange (e) {
       // console.log('当前页码', e)
       this.pageindex = e - 1
-      this.getChapterList()
+      this.getKefuList()
     },
     // 搜索
     onSubmit () {
-      this.getChapterList()
+      this.getKefuList()
     },
 
-    getChapterList () {
+    getKefuList () {
       let query = {
         pageIndex: this.pageindex,
         pageSize: this.pageSize,
         curriculumId: this.curriculumId,
         id: this.id
       }
-      getChapterList(query).then(res => {
+      getKefuList(query).then(res => {
         console.log(res)
         this.tableData = res.data
         this.total = res.pageTotal
@@ -140,23 +105,6 @@ export default {
       return parseTime(time)
     },
 
-    // 删除资讯
-    deleteThis (id) {
-      deleteChapter(id).then(res => {
-        if (res.code === '200') {
-          this.$message({
-            type: 'success',
-            message: '操作成功!'
-          })
-          this.getChapterList()
-        } else {
-          this.$message({
-            type: 'warning',
-            message: '操作失败'
-          })
-        }
-      })
-    },
     toPost () {
       this.$router.push({ path: './new' })
     },

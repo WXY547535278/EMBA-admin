@@ -5,10 +5,10 @@
     <el-form :inline="true"
              :model="formInline"
              class="demo-form-inline">
-      <!-- <el-form-item label="用户openid">
-        <el-input v-model="openid"
-                  placeholder="openid"></el-input>
-      </el-form-item> -->
+      <el-form-item label="课程id">
+        <el-input v-model="id"
+                  placeholder="课程id"></el-input>
+      </el-form-item>
       <el-form-item label="课程名">
         <el-input v-model="name"
                   placeholder="name"></el-input>
@@ -112,8 +112,8 @@ export default {
       status: null,
 
       // 搜索内容
-      openid: null,
-      name: null
+      name: null,
+      id: null
     }
   },
 
@@ -146,7 +146,8 @@ export default {
         pageIndex: this.pageindex,
         pageSize: this.pageSize,
         openid: this.openid,
-        name: this.name
+        name: this.name,
+        id: this.id
       }
       getCurriculumList(query).then(res => {
         // console.log(res)
