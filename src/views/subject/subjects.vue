@@ -6,7 +6,7 @@
              :model="formInline"
              class="demo-form-inline">
 
-      <el-form-item label="轮播图类型">
+      <!-- <el-form-item label="轮播图类型">
         <el-select v-model="formInline.type"
                    placeholder="轮播图类型"
                    @change="onSubmit">
@@ -15,16 +15,16 @@
           <el-option label="热门页"
                      value="2"></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
 
-      <el-form-item>
+      <!-- <el-form-item>
         <el-button type="primary"
                    @click="onSubmit">查询</el-button>
-      </el-form-item>
+      </el-form-item> -->
 
       <el-form-item style="float: right;">
         <el-button type="success"
-                   @click="showPost">新增轮播图</el-button>
+                   @click="showPost">新增题库</el-button>
       </el-form-item>
     </el-form>
 
@@ -32,20 +32,21 @@
       <el-table-column prop="id"
                        label="id"
                        width="250"></el-table-column>
-      <el-table-column label="图片"
+      <el-table-column prop="banner"
+                       label="文件"
                        width="250">
-        <template slot-scope="scope"><img style="width: 100px; height: 100px"
-               :src="scope.row.img"
-               fit="fill" />
-        </template>
       </el-table-column>
-      <el-table-column prop="sort"
-                       label="排序序号"
+      <el-table-column prop="title"
+                       label="标题"
                        width="500"></el-table-column>
-      <!-- <el-table-column v-if="formInline.type==='1'"
-                       prop="param"
-                       label="跳转url"
-                       width="100"></el-table-column> -->
+      <el-table-column prop="text"
+                       :show-overflow-tooltip="true"
+                       label="内容"
+                       width="500"></el-table-column>
+      <el-table-column prop="click"
+                       :show-overflow-tooltip="true"
+                       label="点击量"
+                       width="300"></el-table-column>
 
       <el-table-column fixed="right"
                        label="操作"
@@ -82,19 +83,18 @@
                :model="postForm"
                label-width="120px">
 
-        <el-form-item label="排序序号:">
-          <el-input v-model="postForm.sort"
+        <el-form-item label="标题:">
+          <el-input v-model="postForm.title"
                     style="width: auto;"
-                    type="nummber" />
+                    type="text" />
         </el-form-item>
 
-        <el-form-item label="轮播图图像:">
-          <template>
+        <el-form-item label="文件上传:">
+          <!-- <template>
             <img style="width: 100px; height: 100px"
-                 :src="postForm.img"
+                 :src="putForm.banner"
                  fit="fill" />
-          </template>
-
+          </template> -->
           <el-upload class="upload-demo"
                      :action="upload_url"
                      :headers="upload_head"
@@ -105,15 +105,19 @@
             <el-button size="small"
                        type="primary">点击上传</el-button>
             <div slot="tip"
-                 class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                 class="el-upload__tip"></div>
           </el-upload>
-
         </el-form-item>
 
+        <el-form-item label="内容:">
+          <el-input v-model="postForm.text"
+                    style="width: 600px"
+                    type="textarea" />
+        </el-form-item>
         <hr>
         <el-form-item>
           <el-button type="primary"
-                     @click="postThis(postForm)">保存</el-button>
+                     @click="postThis(postForm)">提交</el-button>
         </el-form-item>
 
       </el-form>
@@ -135,29 +139,18 @@
                     :disabled="true" />
         </el-form-item>
 
-        <el-form-item label="param:"
-                      v-if="putForm.type === '1' ">
-          <span style="color:red; font-size:10px;">参数不能随便填</span>
-          <p />
-          <p />
-
-          <el-input v-model="putForm.param"
-                    style="width: auto;"
-                    type="text" />
-        </el-form-item>
-
-        <el-form-item label="排序序号:">
-          <el-input v-model="putForm.sort"
+        <el-form-item label="标题:">
+          <el-input v-model="putForm.title"
                     style="width: auto;"
                     type="nummber" />
         </el-form-item>
 
-        <el-form-item label="用户头像:">
-          <template>
+        <el-form-item label="文件上传:">
+          <!-- <template>
             <img style="width: 100px; height: 100px"
-                 :src="putForm.img"
+                 :src="putForm.banner"
                  fit="fill" />
-          </template>
+          </template> -->
           <el-upload class="upload-demo"
                      :action="upload_url"
                      :headers="upload_head"
@@ -168,8 +161,14 @@
             <el-button size="small"
                        type="primary">点击上传</el-button>
             <div slot="tip"
-                 class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                 class="el-upload__tip"></div>
           </el-upload>
+        </el-form-item>
+
+        <el-form-item label="内容:">
+          <el-input v-model="putForm.text"
+                    style="width: auto;"
+                    type="text" />
         </el-form-item>
 
         <hr>
@@ -186,7 +185,7 @@
 </template>
 
 <script>
-import { getFlashViewList, deleteFlashView, putFlashView, postFlashView } from "@/api/flashView";
+import { getSubjectList, deleteSubject, putSubject, postSubject } from "@/api/subject";
 import { parseTime } from "@/utils/index"
 import { getRequestUrl } from '@/utils/index'
 import { getToken } from '@/utils/auth.js'
@@ -203,7 +202,7 @@ export default {
       tableData: [],
       currentPage4: 1,
       formInline: {
-        type: '1'
+        type: '3'
       },
       pageindex: 0, // 当前页
       pageSize: 10, // 每页数量
@@ -211,26 +210,27 @@ export default {
       status: null,
       postView: false,
       postForm: {
-        sort: null,
-        img: null
+        title: null,
+        banner: null,
+        type: '3',
+        text: null
       },
       fileList: [],
       putView: false,
       putForm: {
         id: null,
-        img: null,
-        sort: null,
-        type: null,
-        param: null
+        title: null,
+        banner: null,
+        type: '3',
+        text: null
       }
-
 
     }
   },
 
 
   mounted () {
-    this.getFlashViewList()
+    this.getSubjectList()
   },
 
 
@@ -238,26 +238,26 @@ export default {
     // 选择当前页面显示多少条数据的选择框发生改变
     handleSizeChange (e) {
       this.pageSize = e
-      this.getFlashViewList()
+      this.getSubjectList()
     },
     // 分页改变 e点击的页码  用户手动输入了页面然后go
     handleCurrentChange (e) {
       // console.log('当前页码', e)
       this.pageindex = e - 1
-      this.getFlashViewList()
+      this.getSubjectList()
     },
     // 搜索
     onSubmit () {
-      this.getFlashViewList()
+      this.getSubjectList()
     },
 
-    getFlashViewList () {
+    getSubjectList () {
       let query = {
         pageIndex: this.pageindex,
         pageSize: this.pageSize,
         type: this.formInline.type
       }
-      getFlashViewList(query).then(res => {
+      getSubjectList(query).then(res => {
         // console.log(res)
         this.tableData = res.data;
         this.total = res.pageTotal;
@@ -271,50 +271,55 @@ export default {
 
     //
     deleteThis (id) {
-      deleteFlashView(id).then(res => {
+      deleteSubject(id).then(res => {
         if (res.code === '200') {
           this.$message({
             type: 'success',
             message: '操作成功!'
           })
-          this.getFlashViewList();
+          this.getSubjectList();
         } else {
           this.$message({
             type: 'warning',
             message: '操作失败'
-          });
+          })
         }
       })
     },
-
     //新增相关
     showPost () {
-      this.postView = true;
-      this.postForm.sort = null;
-      this.postForm.img = null;
+      // title: null,
+      //   banner: null,
+      //   type: '1',
+      //   text: null
+      this.postView = true
+      this.postForm.title = null
+      this.postForm.banner = null
+      this.postForm.text = null
+      this.postForm.type = '3'
     },
     postThis (data) {
-      data.type = parseInt(this.formInline.type);
-      postFlashView(data).then(res => {
+      data.type = parseInt(this.formInline.type)
+      postSubject(data).then(res => {
         this.$message({
           type: 'success',
           message: '新增成功!'
         })
-        this.postView = false;
-        this.getFlashViewList();
+        this.postView = false
+        this.getSubjectList()
       }).catch(() => {
         this.$message({
           type: 'warning',
           message: '新增失败'
-        });
-      });
+        })
+      })
 
     },
     //处理banner上传图片
     upload_success_banner (response, file, fileList) {
       if (file.response.code === '200') {
-        this.fileList = [];
-        this.postForm.img = file.response.data;
+        this.fileList = [file.response.data]
+        this.postForm.banner = file.response.data
       } else {
         this.$message.error('上传错误!请重试');
       }
@@ -326,41 +331,42 @@ export default {
       var thisBean = {};
       for (var i = 0; i < this.tableData.length; i++) {
         if (id === this.tableData[i].id) {
-          thisBean = this.tableData[i];
+          thisBean = this.tableData[i]
           break;
         }
       }
-      this.putView = true;
-      this.putForm.id = thisBean.id;
-      this.putForm.img = thisBean.img;
-      this.putForm.sort = thisBean.sort;
-      this.putForm.type = thisBean.type;
-      this.putForm.param = thisBean.param;
+      this.putView = true
+      this.putForm.id = thisBean.id
+      this.putForm.banner = thisBean.banner
+      this.putForm.text = thisBean.text
+      this.putForm.title = thisBean.title
+      this.putForm.click = thisBean.click
     },
     putThis (data) {
 
-      putFlashView(data).then(res => {
+      putSubject(data).then(res => {
         this.$message({
           type: 'success',
           message: '修改成功!'
         })
-        this.putView = false;
-        this.getFlashViewList();
+        this.putView = false
+        this.getSubjectList()
       }).catch(() => {
         this.$message({
           type: 'warning',
           message: '修改失败'
-        });
-      });
+        })
+      })
     },
     upload_success_put (response, file, fileList) {
       if (file.response.code === '200') {
-        this.fileList = []
-        this.putForm.img = file.response.data;
+        this.fileList = [file.response.data]
+        this.putForm.banner = file.response.data
       } else {
-        this.$message.error('上传错误!请重试');
+        this.$message.error('上传错误!请重试')
       }
     }
+
   }
 }
 </script>

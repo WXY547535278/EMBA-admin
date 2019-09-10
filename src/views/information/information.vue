@@ -30,7 +30,7 @@
           <img v-image-preview style="width: 50px; height: 50px" :src="scope.row.banner" fit="fill"/>
         </template>
       </el-table-column>
-      <el-table-column prop="text" label="内容" width="300"></el-table-column>
+      <el-table-column :show-overflow-tooltip="true" prop="text" label="内容" width="300"></el-table-column>
       <el-table-column prop="click" label="点击量" width="100"></el-table-column>
       <el-table-column label="发布时间" width="200">
         <template slot-scope="scope">{{parseTime(scope.row.time)}}</template>

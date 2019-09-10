@@ -45,10 +45,10 @@
                fit="fill" />
         </template>
       </el-table-column>
-      <el-table-column prop="introduce"
+      <el-table-column :show-overflow-tooltip="true" prop="introduce"
                        label="课程介绍"
                        width="300"></el-table-column>
-      <el-table-column prop="survey"
+      <el-table-column :show-overflow-tooltip="true" prop="survey"
                        label="课程概况"
                        width="300"></el-table-column>
       <el-table-column prop="price"
