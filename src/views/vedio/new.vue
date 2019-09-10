@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { postVedio } from "@/api/vedio";
+import { postVedio } from "@/api/vedio"
 import { getRequestUrl } from '@/utils/index'
 import { getToken } from '@/utils/auth.js'
 
@@ -113,9 +113,9 @@ export default {
       // }
     },
     // 上传进度显示
+   // 上传进度显示
     uploadVideoProcess (event, file, fileList) {
-      console.log(file)
-      this.videoFlag = true;
+      this.videoFlag = true
       this.videoUploadPercent = 100
     },
     //处理上传视频

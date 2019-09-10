@@ -132,10 +132,10 @@ export default {
         pageIndex: this.pageindex,
         pageSize: this.pageSize,
         curriculumId: this.curriculumId,
-        chapterId: this.id
+        chapterId: this.chapterId
       }
       getVedioList(query).then(res => {
-        console.log(res)
+        console.log("total",res)
         this.tableData = res.data
         this.total = res.pageTotal
       })

@@ -25,6 +25,14 @@ export function getCurriculumList(query) {
     })
 }
 
+// 根据课程id获取章节列表
+export function getChapterList(id) {
+    var url = '/chapter?curriculumId=' + id
+    return request({
+        url: url,
+        method: 'get'
+    })
+}
 // 新增
 export function postCurriculum(data) {
     return request({

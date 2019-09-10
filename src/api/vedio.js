@@ -12,7 +12,7 @@ export function getVedio(id) {
  * @param {obj} data 查询条件
  */
 export function getVedioList(query) {
-    var url = '/sku?init=true&' + 'pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize
+    var url = '/sku?pageIndex=' + query.pageIndex + '&pageSize=' + query.pageSize
     if (query.curriculumId) {
         url += '&curriculumId=' + query.curriculumId
     }

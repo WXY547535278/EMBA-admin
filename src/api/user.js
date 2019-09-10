@@ -58,6 +58,14 @@ export function getUserList(query) {
         // })
 }
 
+// 通过id获取用户列表
+export function getClassById(id) {
+    return request({
+        url: '/curriculum?openid=' + id,
+        method: 'get'
+    })
+}
+
 // 删除用户
 export function delUser(unionid) {
     return request({

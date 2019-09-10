@@ -8,7 +8,7 @@ export function getChapter(id) {
 }
 
 /**
- * 获取教师列表
+ * 获取列表
  * @param {obj} data 查询条件
  */
 export function getChapterList(query) {
@@ -28,7 +28,14 @@ export function getChapterList(query) {
         //     method: 'get'
         // })
 }
-
+// 根据课程id获取章节视频列表
+export function getVedioList(id) {
+    var url = '/sku?chapterId=' + id
+    return request({
+        url: url,
+        method: 'get'
+    })
+}
 // 新增
 export function postChapter(data) {
     return request({

@@ -306,8 +306,8 @@ export default {
         this.$message({
           type: 'warning',
           message: '新增失败'
-        });
-      });
+        })
+      })
 
     },
     //处理banner上传图片

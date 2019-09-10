@@ -188,7 +188,7 @@ export const constantRoutes = [{
         redirect: '/TutorClass/list',
         name: 'TutorClass',
         meta: {
-            title: '辅导课程',
+            title: '全部课程',
             icon: 'tree'
         },
         children: [{
@@ -239,16 +239,16 @@ export const constantRoutes = [{
                     icon: 'dashboard'
                 }
             },
-            {
-                path: 'new',
-                name: 'New',
-                component: () =>
-                    import ('@/views/userClass/new'),
-                meta: {
-                    title: '新增用户课程',
-                    icon: 'dashboard'
-                }
-            },
+            // {
+            //     path: 'new',
+            //     name: 'New',
+            //     component: () =>
+            //         import ('@/views/userClass/new'),
+            //     meta: {
+            //         title: '新增用户课程',
+            //         icon: 'dashboard'
+            //     }
+            // },
             {
                 path: 'put/:id',
                 name: 'Put',
@@ -296,16 +296,16 @@ export const constantRoutes = [{
                     icon: 'dashboard'
                 }
             },
-            {
-                path: 'new',
-                name: 'New',
-                component: () =>
-                    import ('@/views/chapter/new'),
-                meta: {
-                    title: '新增视频章节',
-                    icon: 'dashboard'
-                }
-            },
+            // {
+            //     path: 'new',
+            //     name: 'New',
+            //     component: () =>
+            //         import ('@/views/chapter/new'),
+            //     meta: {
+            //         title: '新增视频章节',
+            //         icon: 'dashboard'
+            //     }
+            // },
             {
                 path: 'put/:id',
                 name: 'Put',
@@ -334,16 +334,16 @@ export const constantRoutes = [{
                     icon: 'dashboard'
                 }
             },
-            {
-                path: 'new',
-                name: 'New',
-                component: () =>
-                    import ('@/views/vedio/new'),
-                meta: {
-                    title: '新增视频',
-                    icon: 'dashboard'
-                }
-            },
+            // {
+            //     path: 'new',
+            //     name: 'New',
+            //     component: () =>
+            //         import ('@/views/vedio/new'),
+            //     meta: {
+            //         title: '新增视频',
+            //         icon: 'dashboard'
+            //     }
+            // },
             {
                 path: 'put/:id',
                 name: 'Put',

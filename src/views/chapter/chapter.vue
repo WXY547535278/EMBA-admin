@@ -44,7 +44,7 @@
 
       <el-table-column fixed="right"
                        label="操作"
-                       width="120">
+                       width="300">
         <template slot-scope="scope">
           <el-button @click.native.prevent="toPut(scope.row.id)"
                      type="text"
@@ -52,6 +52,12 @@
           <el-button @click.native.prevent="deleteThis(scope.row.id,1)"
                      type="text"
                      size="small">删除</el-button>
+          <el-button @click.native.prevent="showVedio(scope.row.id)"
+                     type="text"
+                     size="small">查看章节视频</el-button>
+          <el-button @click.native.prevent="addVedio(scope.row.id,scope.row.curriculumId)"
+                     type="text"
+                     size="small">添加视频</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -69,28 +75,118 @@
       </el-pagination>
     </div>
 
+    <!--  查看章节视频  -->
+    <el-dialog title="章节视频列表"
+               :visible.sync="showView"
+               width="50%">
+      <el-table :data="vedio">
+        <el-table-column prop="id"
+                         label="视频id"
+                         width="300"></el-table-column>
+        <el-table-column prop="name"
+                         label="视频名称"
+                         width="300"></el-table-column>
+
+        <!-- <el-table-column fixed="right"
+                         label="操作"
+                         width="120">
+          <template slot-scope="scope">
+            <el-button @click.native.prevent="toPut(scope.row.id)"
+                       type="text"
+                       size="small">修改</el-button>
+            <el-button @click.native.prevent="deleteThis(scope.row.id,1)"
+                       type="text"
+                       size="small">删除</el-button>
+          </template>
+        </el-table-column> -->
+      </el-table>
+    </el-dialog>
+    <!--  查看章节视频  -->
+    <el-dialog title="添加视频"
+               :visible.sync="showView1"
+               width="80%">
+      <el-form ref="form"
+               :model="form"
+               label-width="120px">
+        <el-form-item label="视频名称"
+                      :rules="[{ required: true, message: '不能为空'}]">
+          <el-input v-model="form.name"
+                    type="text"
+                    style="width:300px" />
+        </el-form-item>
+
+        <!-- action必选参数, 上传的地址 -->
+        <el-form-item label="视频上传"
+                      :rules="[{ required: true, message: '不能为空'}]">
+          <el-upload class="avatar-uploader el-upload--text"
+                     :action="upload_url"
+                     :file-list="false"
+                     :headers="upload_head"
+                     :limit=1
+                     :on-success="upload_success_video"
+                     :before-upload="beforeUploadVideo"
+                     :on-progress="uploadVideoProcess">
+            <video v-if="form.video !='' && videoFlag == false"
+                   :src="form.video"
+                   class="avatar"
+                   controls="controls">您的浏览器不支持视频播放</video>
+            <i v-else-if="form.video =='' && videoFlag == false"
+               class="el-icon-plus avatar-uploader-icon"></i>
+            <el-progress v-if="videoFlag == true"
+                         type="circle"
+                         :percentage="videoUploadPercent"
+                         style="margin-top:30px;"></el-progress>
+          </el-upload>
+          <P class="text">支持mp4,3gp,m3u8格式</P>
+        </el-form-item>
+
+        <hr>
+        <el-form-item>
+          <el-button type="primary"
+                     @click="onSubmit1">创建</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getChapterList, deleteChapter } from "@/api/chapter"
+import { getChapterList, getVedioList, deleteChapter } from "@/api/chapter"
 import { parseTime } from "@/utils/index"
+import { postVedio } from "@/api/vedio"
+import { getToken } from '@/utils/auth.js'
 
 export default {
   name: 'complaintlist',
   data () {
     return {
+      upload_url: 'http://cloud.weiwochina.com/zuul/emba/upload/picUpload',  //请求的url
+      // upload_url: getRequestUrl() + "upload/picUpload",  //请求的url
+      upload_head: {
+        Authorization: getToken()
+      }, // 上传请求头
+      stander: '',
+      vedio: [],
       tableData: [],
       currentPage4: 1,
       formInline: {
         username: '',
         region: ''
       },
+      form: {
+        curriculumId: null,
+        chapterId: null,
+        name: null,
+        video: null
+      },
       pageindex: 0, // 当前页
       pageSize: 10, // 每页数量
       total: 0, // 数量总条数
       status: null,
-
+      showView: false,
+      showView1: false,
+      videoFlag: true,
+      videoUploadPercent: 0,
       // 搜索内容
       // openid: null
       curriculumId: null,
@@ -106,6 +202,35 @@ export default {
 
 
   methods: {
+    addVedio (id, curriculumId) {
+      this.form.curriculumId = curriculumId
+      this.form.chapterId = id
+      console.log("chapter", id, curriculumId)
+      this.showView1 = true
+    },
+    onSubmit1 () {
+      console.log(this.form)
+      postVedio(this.form).then(res => {
+        this.$message({
+          type: 'success',
+          message: '新增成功!'
+        })
+        this.showView1 = false
+      }).catch(() => {
+        this.$message({
+          type: 'warning',
+          message: '新增失败'
+        })
+      })
+    },
+    showVedio (id) {
+      this.showView = true
+      this.vedio = []
+      console.log(id)
+      getVedioList(id).then(res => {
+        this.vedio = res.data
+      })
+    },
     // 选择当前页面显示多少条数据的选择框发生改变
     handleSizeChange (e) {
       this.pageSize = e
@@ -163,6 +288,35 @@ export default {
 
     toPut (id) {
       this.$router.push({ path: './put/' + id })
+    },
+    // 验证视频格式和视频大小
+    beforeUploadVideo (file) {
+      // const isLt10M = file.size / 1024 / 1024 < 10;
+      if (['video/mp4', 'video/3gp', 'video/m3u8'].indexOf(file.type) == -1) {
+        this.$message.error('请上传正确的视频格式')
+        return false;
+      }
+      // if (!isLt10M) {
+      //   this.$message.error('上传视频大小不能超过10MB哦!');
+      //   return false;
+      // }
+    },
+    // 上传进度显示
+   // 上传进度显示
+    uploadVideoProcess (event, file, fileList) {
+      this.videoFlag = true
+      this.videoUploadPercent = 100
+    },
+    //处理上传视频
+    upload_success_video (response, file, fileList) {
+      if (file.response.code == 200) {
+        console.log(file.response.data)
+        this.fileList = []
+        this.form.video = file.response.data
+      } else {
+        console.log(file.response.data)
+        this.$message.error('上传错误!请重试')
+      }
     }
 
   }

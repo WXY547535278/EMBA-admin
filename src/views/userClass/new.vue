@@ -41,8 +41,6 @@
     },
 
     methods: {
-
-
       onSubmit() {
         console.log(this.form)
         postOrder(this.form).then(res => {
@@ -56,7 +54,7 @@
             type: 'warning',
             message: '新增失败'
           })
-        });
+        })
       }
 
       // //处理banner上传图片

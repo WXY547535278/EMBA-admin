@@ -158,7 +158,7 @@ export default {
     // 上传进度显示
     uploadVideoProcess (event, file, fileList) {
       this.videoFlag = true
-      this.videoUploadPercent = file.percentage.toFixed(0)
+      this.videoUploadPercent = 100
     },
     // 处理上传视频
     upload_success_video (response, file, fileList) {

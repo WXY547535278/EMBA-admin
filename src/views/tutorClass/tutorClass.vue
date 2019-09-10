@@ -45,10 +45,12 @@
                fit="fill" />
         </template>
       </el-table-column>
-      <el-table-column :show-overflow-tooltip="true" prop="introduce"
+      <el-table-column :show-overflow-tooltip="true"
+                       prop="introduce"
                        label="课程介绍"
                        width="300"></el-table-column>
-      <el-table-column :show-overflow-tooltip="true" prop="survey"
+      <el-table-column :show-overflow-tooltip="true"
+                       prop="survey"
                        label="课程概况"
                        width="300"></el-table-column>
       <el-table-column prop="price"
@@ -64,7 +66,7 @@
 
       <el-table-column fixed="right"
                        label="操作"
-                       width="120">
+                       width="300">
         <template slot-scope="scope">
           <el-button @click.native.prevent="toPut(scope.row.id)"
                      type="text"
@@ -72,6 +74,12 @@
           <el-button @click.native.prevent="deleteThis(scope.row.id,1)"
                      type="text"
                      size="small">删除</el-button>
+          <el-button @click.native.prevent="getUserList(scope.row.id)"
+                     type="text"
+                     size="small">给用户添加该课程</el-button>
+          <el-button @click.native.prevent="addChapter(scope.row.id)"
+                     type="text"
+                     size="small">添加章节</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -88,32 +96,147 @@
                      :total="total">
       </el-pagination>
     </div>
+    <!--  查看用户列表区域  -->
+    <el-dialog title="用户列表"
+               :visible.sync="showView"
+               width="80%">
+      <!-- 搜索条件区域 -->
+      <el-form :inline="true"
+               :model="userData"
+               class="demo-form-inline">
+        <el-form-item label="openid">
+          <el-input v-model="openid"
+                    placeholder="openid"></el-input>
+        </el-form-item>
+        <el-form-item label="姓名">
+          <el-input v-model="name"
+                    placeholder="姓名"></el-input>
+        </el-form-item>
+        <el-form-item label="电话号码">
+          <el-input v-model="phone"
+                    placeholder="电话号码"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary"
+                     @click="onSubmit1">查询</el-button>
+        </el-form-item>
+      </el-form>
+
+      <el-table :data="userData">
+        <el-table-column prop="openid"
+                         label="openid"
+                         width="250"></el-table-column>
+        <el-table-column prop="nickName"
+                         label="昵称"
+                         width="200"></el-table-column>
+        <!-- <el-table-column prop="balance"
+                       label="余额"
+                       width="150"></el-table-column> -->
+        <el-table-column prop="phone"
+                         label="电话"
+                         width="150"></el-table-column>
+        <el-table-column prop="name"
+                         label="真实姓名"
+                         width="150"></el-table-column>
+        <el-table-column label="头像"
+                         width="150">
+
+          <template slot-scope="scope"><img v-image-preview
+                 style="width: 35px; height: 35px"
+                 :src="scope.row.headImg"
+                 fit="fill" /></template>
+        </el-table-column>
+        <el-table-column prop="address"
+                         label="用户地址"
+                         width="170"></el-table-column>
+        <el-table-column fixed="right"
+                         label="操作"
+                         width="120">
+          <template slot-scope="scope">
+            <el-button @click.native.prevent="addClass(scope.row.openid)"
+                       type="text"
+                       size="small">添加课程</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- 分页区 -->
+
+      <div class="blockpage"
+           style="margin:0px auto">
+        <el-pagination @size-change="handleSizeChange"
+                       @current-change="handleCurrentChange"
+                       :current-page="currentPage4"
+                       :page-sizes="[10, 20, 30, 40]"
+                       :page-size="pageSize"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="total">
+        </el-pagination>
+      </div>
+    </el-dialog>
+
+    <!--  添加章节区域  -->
+    <el-dialog title="添加章节"
+               :visible.sync="showView1"
+               width="80%">
+      <el-form ref="form"
+               :model="postForm"
+               label-width="120px">
+        <el-form-item label="章节名称:">
+          <el-input v-model="postForm.name"
+                    style="width: 300px;"
+                    type="text" />
+        </el-form-item>
+        <hr>
+        <el-form-item>
+          <el-button type="primary"
+                     @click="postThis(postForm)">添加</el-button>
+        </el-form-item>
+
+      </el-form>
+
+    </el-dialog>
 
   </div>
 </template>
 
 <script>
-import { getCurriculumList, deleteCurriculum } from "@/api/tutorClass"
+import { getCurriculumList, getChapterList, deleteCurriculum } from "@/api/tutorClass"
+import { getUserList } from "@/api/user"
+import { postOrder } from "@/api/userClass"
+import { postChapter } from "@/api/chapter"
 import { parseTime } from "@/utils/index"
 
 export default {
   name: 'complaintlist',
   data () {
     return {
+      form: {
+        obj: null,
+        openid: null,
+        adminId: '121044709700001'
+      },
+      userData: [],
       tableData: [],
       currentPage4: 1,
       formInline: {
         username: '',
         region: ''
       },
+      showView1: false,
+      showView: false,
       pageindex: 0, // 当前页
       pageSize: 10, // 每页数量
       total: 0, // 数量总条数
       status: null,
-
+      postForm: {
+        name: null,
+        curriculumId: null
+      },
       // 搜索内容
       name: null,
-      id: null
+      id: null,
+      phone: null,
+      total1: 0
     }
   },
 
@@ -125,6 +248,26 @@ export default {
 
 
   methods: {
+    //添加章节
+    addChapter (id) {
+      this.postForm.curriculumId = id
+      console.log("curriculumId", this.postForm.curriculumId)
+      this.showView1 = true
+    },
+    postThis (data) {
+      postChapter(data).then(res => {
+        this.$message({
+          type: 'success',
+          message: '新增成功!'
+        })
+        this.showView1 = false
+      }).catch(() => {
+        this.$message({
+          type: 'warning',
+          message: '新增失败'
+        })
+      })
+    },
     // 选择当前页面显示多少条数据的选择框发生改变
     handleSizeChange (e) {
       this.pageSize = e
@@ -135,6 +278,45 @@ export default {
       // console.log('当前页码', e)
       this.pageindex = e - 1
       this.getCurriculumList()
+    },
+    // 搜索
+    onSubmit1 () {
+      this.getUserList()
+    },
+    //添加课程
+    addClass (id) {
+      this.form.openid = id
+      postOrder(this.form).then(res => {
+        this.$message({
+          type: 'success',
+          message: '新增成功!'
+        })
+        this.showView = false
+      }).catch(() => {
+        this.$message({
+          type: 'warning',
+          message: '新增失败'
+        })
+      })
+    },
+    // 获取用户列表
+    getUserList (id) {
+      this.form.obj = id
+      console.log('classId', this.form.classId)
+      let query = {
+        pageIndex: this.pageindex,
+        pageSize: this.pageSize,
+        name: this.name,
+        openid: this.openid,
+        phone: this.phone
+      }
+      this.showView = true
+      this.userData = []
+      getUserList(query).then(res => {
+        console.log('user', res)
+        this.userData = res.data
+        this.total1 = res.pageTotal
+      })
     },
     // 搜索
     onSubmit () {
