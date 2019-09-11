@@ -169,7 +169,7 @@
                        :page-sizes="[10, 20, 30, 40]"
                        :page-size="pageSize"
                        layout="total, sizes, prev, pager, next, jumper"
-                       :total="total">
+                       :total="total1">
         </el-pagination>
       </div>
     </el-dialog>
@@ -236,7 +236,10 @@ export default {
       name: null,
       id: null,
       phone: null,
-      total1: 0
+      total1: 0,
+      pageindex1: 0, // 当前页
+      pageSize1: 10 // 每页数量
+
     }
   },
 
@@ -302,10 +305,10 @@ export default {
     // 获取用户列表
     getUserList (id) {
       this.form.obj = id
-      console.log('classId', this.form.classId)
+      console.log('curriculumId', this.form.obj)
       let query = {
-        pageIndex: this.pageindex,
-        pageSize: this.pageSize,
+        pageIndex: this.pageindex1,
+        pageSize: this.pageSize1,
         name: this.name,
         openid: this.openid,
         phone: this.phone
@@ -316,6 +319,7 @@ export default {
         console.log('user', res)
         this.userData = res.data
         this.total1 = res.pageTotal
+        console.log('total1', this.total1)
       })
     },
     // 搜索
@@ -355,7 +359,7 @@ export default {
           this.$message({
             type: 'warning',
             message: '操作失败'
-          });
+          })
         }
       })
     },
