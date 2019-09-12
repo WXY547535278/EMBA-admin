@@ -158,7 +158,8 @@ export default {
     // 上传进度显示
     uploadVideoProcess (event, file, fileList) {
       this.videoFlag = true
-      this.videoUploadPercent = 100
+      // this.videoUploadPercent = 100
+      this.videoUploadPercent = file.percentage.toFixed(0)
     },
     // 处理上传视频
     upload_success_video (response, file, fileList) {
@@ -166,6 +167,7 @@ export default {
         console.log(file.response.data)
         this.fileList = []
         this.form.video = file.response.data
+        this.$message.success('上传成功')
       } else {
         console.log(file.response.data)
         this.$message.error('上传错误!请重试')
