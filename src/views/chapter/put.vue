@@ -40,14 +40,15 @@
 
 <script>
 import { getChapter, putChapter } from "@/api/chapter";
-import { getRequestUrl } from '@/utils/index'
+import { getRequestUrl, getUploadUrl } from '@/utils/index'
 import { getToken } from '@/utils/auth.js'
 
 
 export default {
   data () {
     return {
-      upload_url: getRequestUrl() + "upload/picUpload",  //请求的url
+      // upload_url: getRequestUrl() + "upload/picUpload", 
+      upload_url: getUploadUrl(),  // 请求的url
       upload_head: {
         Authorization: getToken()
       }, // 上传请求头

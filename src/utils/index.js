@@ -6,9 +6,11 @@
  * todo 获取请求链接
  */
 export function getRequestUrl() {
-  // return 'http://47.100.48.147:8080/bird_nest/'
-  // return 'http://127.0.0.1:8000/'
   return 'http://cloud.weiwochina.com/emba/'
+}
+export function getUploadUrl() {
+  // return 'http://cloud.weiwochina.com/zuul/emba/upload/picUpload'
+  return 'cloud.weiwochina.com/zuul/base_project/upload/emba/picUpload'
 }
 
 /**
@@ -20,7 +22,7 @@ export function getRequestUrl() {
 export function parseTime(time, cFormat) {
   if (!time) {
     return
-    }
+  }
   if (arguments.length === 0) {
     return null
   }

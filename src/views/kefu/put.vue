@@ -20,7 +20,7 @@
       </el-form-item>
 
       <el-form-item label="客户号码"
-                    :rules="[{ required: true, message: '姓名不能为空'}]">
+                    :rules="[{ required: true, message: '号码不能为空'}]">
         <el-input v-model="form.text"
                   type="text" />
       </el-form-item>
@@ -35,14 +35,15 @@
 
 <script>
 import { getKefu, putKefu } from "@/api/kefu";
-import { getRequestUrl } from '@/utils/index'
+import { getRequestUrl, upload_url} from '@/utils/index'
 import { getToken } from '@/utils/auth.js'
 
 
 export default {
   data () {
     return {
-      upload_url: getRequestUrl() + "upload/picUpload",  //请求的url
+      // upload_url: getRequestUrl() + "upload/picUpload", 
+      upload_url: getUploadUrl(),  // 请求的url
       upload_head: {
         Authorization: getToken()
       }, // 上传请求头
