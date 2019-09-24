@@ -13,16 +13,10 @@
              :model="form"
              label-width="120px">
 
-      <el-form-item label="id">
-        <el-input v-model="form.id"
-                  type="text"
-                  :disabled="true" />
-      </el-form-item>
-
       <el-form-item label="客户号码"
                     :rules="[{ required: true, message: '号码不能为空'}]">
         <el-input v-model="form.text"
-                  type="text" />
+                  type="text"  style="width:300px;"/>
       </el-form-item>
       <hr>
       <el-form-item>
@@ -34,23 +28,20 @@
 </template>
 
 <script>
-import { getKefu, putKefu } from "@/api/kefu";
-import { getRequestUrl, upload_url} from '@/utils/index'
+import { getKefu, putKefu } from '@/api/kefu'
 import { getToken } from '@/utils/auth.js'
-
 
 export default {
   data () {
     return {
-      // upload_url: getRequestUrl() + "upload/picUpload", 
-      upload_url: getUploadUrl(),  // 请求的url
       upload_head: {
         Authorization: getToken()
       }, // 上传请求头
       stander: '',
       form: {
         id: null,
-        text: null
+        text: null,
+        type: '1'
       },
       fileList: []
     }
@@ -77,13 +68,15 @@ export default {
       getKefu(id).then(res => {
         this.form.id = res.data.id
         this.form.text = res.data.text
+        console.log(res)
       }).catch((res) => {
+        console.log(res)
         this.$message({
           type: 'warning',
           message: '参数错误'
         })
         this.$router.push({ path: '/kefu/list' })
-      });
+      })
     },
 
     //返回上一页
@@ -93,7 +86,7 @@ export default {
   },
   computed: {},
   mounted () {
-    this.init(this.$route.params.id)
+     this.form.id = this.$route.params.id
   }
 }
 </script>

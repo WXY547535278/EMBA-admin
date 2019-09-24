@@ -19,7 +19,7 @@
                   :disabled="true" />
       </el-form-item>
 
-      <el-form-item label="用户id"
+      <el-form-item label="课程id"
                     :rules="[{ required: true, message: '姓名不能为空'}]">
         <el-input v-model="form.curriculumId"
                   type="text" />

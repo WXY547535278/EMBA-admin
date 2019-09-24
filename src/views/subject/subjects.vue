@@ -167,8 +167,8 @@
 
         <el-form-item label="内容:">
           <el-input v-model="putForm.text"
-                    style="width: auto;"
-                    type="text" />
+                    style="width: 600px;"
+                    type="textarea" />
         </el-form-item>
 
         <hr>
