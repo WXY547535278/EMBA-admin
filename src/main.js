@@ -6,7 +6,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
-//import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
+// import zhLocale from 'element-ui/lib/locale/lang/zh-CN'
 
 import '@/styles/index.scss' // global css
 
@@ -17,11 +17,17 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 
-
-
 import VueDirectiveImagePreviewer from 'vue-directive-image-previewer'
 import 'vue-directive-image-previewer/dist/assets/style.css'
 Vue.use(VueDirectiveImagePreviewer)
+
+// 富文本框
+import VueQuillEditor from 'vue-quill-editor'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+Vue.use(VueQuillEditor)
 
 /**
  * If you don't want to use mock-server
@@ -33,18 +39,18 @@ Vue.use(VueDirectiveImagePreviewer)
  */
 import { mockXHR } from '../mock'
 if (process.env.NODE_ENV === 'production') {
-  mockXHR()
+    mockXHR()
 }
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
-//Vue.use(ElementUI, { zhLocale })
+    // Vue.use(ElementUI, { zhLocale })
 
 Vue.config.productionTip = false
 
 new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
+    el: '#app',
+    router,
+    store,
+    render: h => h(App)
 })

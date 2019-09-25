@@ -113,9 +113,20 @@
         </el-form-item>
 
         <el-form-item label="内容:">
-          <el-input v-model="postForm.text"
+          <!-- <el-input v-model="postForm.text"
                     style="width: 600px"
-                    type="textarea" />
+                    type="textarea" /> -->
+          <quill-editor v-model="postForm.text"
+                        ref="myQuillEditor"
+                        :options="editorOption"
+                        @change="onEditorChange($event)">
+          </quill-editor>
+          <el-upload class="avatar-uploader"
+                     ref="upload"
+                     :action="upload_url"
+                     :on-success="uploadSuccess"
+                     :on-error="uploadError">
+          </el-upload>
         </el-form-item>
         <hr>
         <el-form-item>
@@ -169,9 +180,20 @@
         </el-form-item>
 
         <el-form-item label="内容:">
-          <el-input v-model="putForm.text"
+          <!-- <el-input v-model="putForm.text"
                     style="width: auto;"
-                    type="textarea" />
+                    type="textarea" /> -->
+          <quill-editor v-model="putForm.text"
+                        ref="myQuillEditor"
+                        :options="editorOption"
+                        @change="onEditorChange($event)">
+          </quill-editor>
+          <el-upload class="avatar-uploader"
+                     ref="upload"
+                     :action="upload_url"
+                     :on-success="uploadSuccess"
+                     :on-error="uploadError">
+          </el-upload>
         </el-form-item>
 
         <hr>
@@ -197,6 +219,11 @@ import { getToken } from '@/utils/auth.js'
 export default {
   name: 'complaintlist',
   data () {
+    let container = [
+      [{ 'size': ['small', false, 'large', 'huge'] }], // 文字大小
+      ['image'], // 图片
+      [{ 'color': [] }, { 'background': [] }] // 字体颜色
+    ]
     return {
       // upload_url: getRequestUrl() + "upload/picUpload", 
       upload_url: getUploadUrl(),  // 请求的url
@@ -227,8 +254,25 @@ export default {
         banner: null,
         type: '1',
         text: null
+      },
+      // 富文本框
+      content: '',
+      editorOption: {
+        modules: {
+          toolbar: {
+            container: container,
+            handlers: {
+              'image': function (value) {
+                if (value) {
+                  document.querySelector('.avatar-uploader input').click()
+                } else {
+                  this.quill.format('image', false)
+                }
+              }
+            }
+          }
+        }
       }
-
     }
   },
 
@@ -239,6 +283,25 @@ export default {
 
 
   methods: {
+    // 富文本框图片上传显示
+    uploadSuccess (response, file, fileList) {
+      // 清除加载动画条
+      this.$refs.upload.clearFiles()
+      // 获取富文本组件实例
+      let quill = this.$refs.myQuillEditor.quill
+      // 如果上传成功
+      if (file.response.code == 200) {
+        console.log('返回的图片地址', file.response.data)
+        //获取光标所在位置
+        let length = quill.getSelection().index
+        // 插入图片  res.info为服务器返回的图片地址
+        quill.insertEmbed(length, 'image', file.response.data)
+        // 调整光标到最后
+        quill.setSelection(length + 1)
+      } else {
+        this.$message.error('图片插入失败')
+      }
+    },
     // 选择当前页面显示多少条数据的选择框发生改变
     handleSizeChange (e) {
       this.pageSize = e
