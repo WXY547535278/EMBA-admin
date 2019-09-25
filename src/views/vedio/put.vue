@@ -163,6 +163,7 @@ export default {
     },
     // 处理上传视频
     upload_success_video (response, file, fileList) {
+      this.videoUploadPercent = 0
       if (file.response.code == 200) {
         console.log(file.response.data)
         this.fileList = []

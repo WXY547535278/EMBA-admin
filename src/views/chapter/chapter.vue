@@ -22,10 +22,10 @@
     <el-form :inline="true"
              :model="formInline"
              class="demo-form-inline">
-      <el-form-item style="float: right;">
+      <!-- <el-form-item style="float: right;">
         <el-button type="success"
                    @click="toPost">新增章节</el-button>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
 
     <el-table :data="tableData">
@@ -129,6 +129,8 @@
             <video v-if="form.video !='' && videoFlag == false"
                    :src="form.video"
                    class="avatar"
+                   width="300"
+                   height="300"
                    controls="controls">您的浏览器不支持视频播放</video>
             <i v-else-if="form.video =='' && videoFlag == false"
                class="el-icon-plus avatar-uploader-icon"></i>
@@ -310,8 +312,10 @@ export default {
     },
     //处理上传视频
     upload_success_video (response, file, fileList) {
+      this.videoUploadPercent = 0
       if (file.response.code == 200) {
         console.log(file.response)
+        this.$message.success('上传成功！')
         this.fileList = []
         this.form.video = file.response.data
       } else {

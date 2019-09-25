@@ -23,10 +23,10 @@
     <el-form :inline="true"
              :model="formInline"
              class="demo-form-inline">
-      <el-form-item style="float: right;">
+      <!-- <el-form-item style="float: right;">
         <el-button type="success"
                    @click="toPost">新增用户课程</el-button>
-      </el-form-item>
+      </el-form-item> -->
     </el-form>
 
     <el-table :data="tableData">
