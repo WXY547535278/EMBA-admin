@@ -101,6 +101,7 @@
                      :multiple=false
                      :limit=1
                      :on-success="upload_success_banner"
+                     :before-upload="beforeUploadFile"
                      :file-list="fileList">
             <el-button size="small"
                        type="primary">点击上传</el-button>
@@ -168,6 +169,7 @@
                      :multiple=false
                      :limit=1
                      :on-success="upload_success_put"
+                     :before-upload="beforeUploadFile"
                      :file-list="fileList">
             <el-button size="small"
                        type="primary">点击上传</el-button>
@@ -217,9 +219,10 @@ export default {
   name: 'complaintlist',
   data () {
     let container = [
-      [{ 'size': ['small', false, 'large', 'huge'] }], // 文字大小
+      // [{ 'size': ['small', false, 'large', 'huge'] }], // 文字大小
       ['image'], // 图片
-      [{ 'color': [] }, { 'background': [] }] // 字体颜色
+      [{ 'color': [] }, { 'background': [] }], // 字体颜色
+      // [{ 'indent': '-1'}, { 'indent': '+1' }]
     ]
     return {
       // upload_url: getRequestUrl() + "upload/picUpload", 
@@ -299,6 +302,21 @@ export default {
       } else {
         this.$message.error('图片插入失败')
       }
+    },
+    // 验证文件格式
+    beforeUploadFile (file) {
+      console.log(file.name)
+      // const isLt10M = file.size / 1024 / 1024 < 10;
+      if ((file.name.indexOf('docx') != -1)||(file.name.indexOf('pdf') != -1)||(file.name.indexOf('txt') != -1)) {
+        this.$message.success('上传成功')
+      }else{
+        this.$message.error('请上传正确的文件格式')
+        return false;
+      }
+      // if (!isLt10M) {
+      //   this.$message.error('上传视频大小不能超过10MB哦!');
+      //   return false;
+      // }
     },
     // 选择当前页面显示多少条数据的选择框发生改变
     handleSizeChange (e) {

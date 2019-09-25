@@ -220,7 +220,7 @@ export default {
   name: 'complaintlist',
   data () {
     let container = [
-      [{ 'size': ['small', false, 'large', 'huge'] }], // 文字大小
+      // [{ 'size': ['small', false, 'large', 'huge'] }], // 文字大小
       ['image'], // 图片
       [{ 'color': [] }, { 'background': [] }] // 字体颜色
     ]

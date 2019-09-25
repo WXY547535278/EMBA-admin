@@ -78,66 +78,6 @@
       </el-pagination>
     </div>
 
-    <!--  新增区  -->
-    <el-dialog title="列表"
-               :visible.sync="postView"
-               width="80%">
-      <el-form ref="form"
-               :model="postForm"
-               label-width="120px">
-
-        <el-form-item label="标题:">
-          <el-input v-model="postForm.title"
-                    style="width: auto;"
-                    type="text" />
-        </el-form-item>
-
-        <el-form-item label="图片:">
-          <template>
-            <img style="width: 100px; height: 100px"
-                 :src="postForm.banner"
-                 fit="fill" />
-          </template>
-          <el-upload class="upload-demo"
-                     :action="upload_url"
-                     :headers="upload_head"
-                     :multiple=false
-                     :limit=1
-                     :on-success="upload_success_banner"
-                     :file-list="fileList">
-            <el-button size="small"
-                       type="primary">点击上传</el-button>
-            <div slot="tip"
-                 class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-          </el-upload>
-        </el-form-item>
-
-        <el-form-item label="内容:">
-          <!-- <el-input v-model="postForm.text"
-                    style="width: 600px"
-                    type="textarea" /> -->
-          <quill-editor v-model="postForm.text"
-                        ref="myQuillEditor"
-                        :options="editorOption"
-                        @change="onEditorChange($event)">
-          </quill-editor>
-          <el-upload class="avatar-uploader"
-                     ref="upload"
-                     :action="upload_url"
-                     :on-success="uploadSuccess"
-                     :on-error="uploadError">
-          </el-upload>
-        </el-form-item>
-        <hr>
-        <el-form-item>
-          <el-button type="primary"
-                     @click="postThis(postForm)">提交</el-button>
-        </el-form-item>
-
-      </el-form>
-
-    </el-dialog>
-
     <!--  修改区  -->
     <el-dialog title="列表"
                :visible.sync="putView"
@@ -206,6 +146,66 @@
 
     </el-dialog>
 
+    <!--  新增区  -->
+    <el-dialog title="列表"
+               :visible.sync="postView"
+               width="80%">
+      <el-form ref="form"
+               :model="postForm"
+               label-width="120px">
+
+        <el-form-item label="标题:">
+          <el-input v-model="postForm.title"
+                    style="width: auto;"
+                    type="text" />
+        </el-form-item>
+
+        <el-form-item label="图片:">
+          <template>
+            <img style="width: 100px; height: 100px"
+                 :src="postForm.banner"
+                 fit="fill" />
+          </template>
+          <el-upload class="upload-demo"
+                     :action="upload_url"
+                     :headers="upload_head"
+                     :multiple=false
+                     :limit=1
+                     :on-success="upload_success_banner"
+                     :file-list="fileList">
+            <el-button size="small"
+                       type="primary">点击上传</el-button>
+            <div slot="tip"
+                 class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
+        </el-form-item>
+
+        <el-form-item label="内容:">
+          <!-- <el-input v-model="postForm.text"
+                    style="width: 600px"
+                    type="textarea" /> -->
+          <quill-editor v-model="postForm.text"
+                        ref="myQuillEditor"
+                        :options="editorOption"
+                        @change="onEditorChange($event)">
+          </quill-editor>
+          <el-upload class="avatar-uploader"
+                     ref="upload"
+                     :action="upload_url"
+                     :on-success="uploadSuccess"
+                     :on-error="uploadError">
+          </el-upload>
+        </el-form-item>
+        <hr>
+        <el-form-item>
+          <el-button type="primary"
+                     @click="postThis(postForm)">提交</el-button>
+        </el-form-item>
+
+      </el-form>
+
+    </el-dialog>
+
   </div>
 </template>
 
@@ -220,7 +220,7 @@ export default {
   name: 'complaintlist',
   data () {
     let container = [
-      [{ 'size': ['small', false, 'large', 'huge'] }], // 文字大小
+      // [{ 'size': ['small', false, 'large', 'huge'] }], // 文字大小
       ['image'], // 图片
       [{ 'color': [] }, { 'background': [] }] // 字体颜色
     ]
@@ -302,6 +302,9 @@ export default {
       } else {
         this.$message.error('图片插入失败')
       }
+    },
+    uploadError() {
+
     },
     // 选择当前页面显示多少条数据的选择框发生改变
     handleSizeChange (e) {
