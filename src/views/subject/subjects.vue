@@ -219,6 +219,8 @@ export default {
   name: 'complaintlist',
   data () {
     let container = [
+      ['bold', 'italic', 'underline'],
+      [{ 'align': [] }],
       // [{ 'size': ['small', false, 'large', 'huge'] }], // 文字大小
       ['image'], // 图片
       [{ 'color': [] }, { 'background': [] }], // 字体颜色

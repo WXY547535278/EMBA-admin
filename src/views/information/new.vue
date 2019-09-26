@@ -71,6 +71,8 @@ import { getToken } from '@/utils/auth.js'
 export default {
   data () {
     let container = [
+      ['bold', 'italic', 'underline'],
+      [{ 'align': [] }],
       // [{ 'size': ['small', false, 'large', 'huge'] }], // 文字大小
       ['image'], // 图片
       [{ 'color': [] }, { 'background': [] }]

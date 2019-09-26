@@ -157,12 +157,13 @@ import { getChapterList, getVedioList, deleteChapter } from "@/api/chapter"
 import { parseTime } from "@/utils/index"
 import { postVedio } from "@/api/vedio"
 import { getToken } from '@/utils/auth.js'
+import { getRequestUrl, getUploadUrl } from '@/utils/index'
 
 export default {
   name: 'complaintlist',
   data () {
     return {
-      upload_url: 'http://cloud.weiwochina.com/zuul/emba/upload/picUpload',  //请求的url
+      upload_url: getUploadUrl(),  // 请求的url
       // upload_url: getRequestUrl() + "upload/picUpload",  //请求的url
       upload_head: {
         Authorization: getToken()

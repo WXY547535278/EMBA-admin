@@ -11,8 +11,6 @@ import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 import '@/styles/index.scss' // global css
 
 import App from './App'
-import store from './store'
-import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
@@ -29,6 +27,9 @@ import 'quill/dist/quill.bubble.css'
 
 Vue.use(VueQuillEditor)
 
+import store from './store'
+import router from './router'
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
@@ -39,18 +40,18 @@ Vue.use(VueQuillEditor)
  */
 import { mockXHR } from '../mock'
 if (process.env.NODE_ENV === 'production') {
-    mockXHR()
+  mockXHR()
 }
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
-    // Vue.use(ElementUI, { zhLocale })
+// Vue.use(ElementUI, { zhLocale })
 
 Vue.config.productionTip = false
 
 new Vue({
-    el: '#app',
-    router,
-    store,
-    render: h => h(App)
+  el: '#app',
+  router,
+  store,
+  render: h => h(App)
 })
