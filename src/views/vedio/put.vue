@@ -46,12 +46,13 @@
                     :rules="[{ required: true, message: '不能为空'}]">
         <el-upload class="avatar-uploader el-upload--text"
                    :action="upload_url"
+                   :on-progress="uploadVideoProcess"
                    :file-list="false"
                    :headers="upload_head"
                    :limit=1
                    :on-success="upload_success_video"
                    :before-upload="beforeUploadVideo"
-                   :on-progress="uploadVideoProcess">
+                   >
           <video v-if="form.video !='' && videoFlag == false"
                  :src="form.video"
                  class="avatar"
@@ -160,6 +161,7 @@ export default {
       this.videoFlag = true
       // this.videoUploadPercent = 100
       this.videoUploadPercent = file.percentage.toFixed(0)
+      // console.log(this.videoUploadPercent)
     },
     // 处理上传视频
     upload_success_video (response, file, fileList) {

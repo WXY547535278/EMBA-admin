@@ -224,7 +224,7 @@ export default {
       // [{ 'size': ['small', false, 'large', 'huge'] }], // 文字大小
       ['image'], // 图片
       [{ 'color': [] }, { 'background': [] }], // 字体颜色
-      // [{ 'indent': '-1'}, { 'indent': '+1' }]
+      [{ 'indent': '-1'}, { 'indent': '+1' }]
     ]
     return {
       // upload_url: getRequestUrl() + "upload/picUpload", 

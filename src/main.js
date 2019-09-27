@@ -38,20 +38,21 @@ import router from './router'
  * Currently MockJs will be used in the production environment,
  * please remove it before going online! ! !
  */
-import { mockXHR } from '../mock'
-if (process.env.NODE_ENV === 'production') {
-  mockXHR()
-}
+// 不注释掉的话会造成 :on=progress钩子函数不起作用
+// import { mockXHR } from '../mock'
+// if (process.env.NODE_ENV === 'production') {
+//     mockXHR()
+// }
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
-// Vue.use(ElementUI, { zhLocale })
+    // Vue.use(ElementUI, { zhLocale })
 
 Vue.config.productionTip = false
 
 new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
+    el: '#app',
+    router,
+    store,
+    render: h => h(App)
 })
