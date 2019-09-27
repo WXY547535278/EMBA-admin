@@ -76,7 +76,8 @@ export default {
       // [{ 'size': ['small', false, 'large', 'huge'] }], // 文字大小
       ['image'], // 图片
       [{ 'color': [] }, { 'background': [] }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }]
+      // [{ 'indent': '-1'}, { 'indent': '+1' }]
+      [{ 'header': 1 }, { 'header': 2 }] 
     ]
     return {
       // upload_url: getRequestUrl() + "upload/picUpload", 
