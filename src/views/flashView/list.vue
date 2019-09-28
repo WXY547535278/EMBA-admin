@@ -87,7 +87,8 @@
                     style="width: auto;"
                     type="nummber" />
         </el-form-item>
-        <el-form-item label="跳转url:">
+        <el-form-item label="跳转url:"
+                      v-if="putForm.type === '1' ">
           <el-input v-model="postForm.param"
                     style="width: 500px;"
                     type="nummber" />
