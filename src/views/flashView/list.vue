@@ -42,10 +42,10 @@
       <el-table-column prop="sort"
                        label="排序序号"
                        width="500"></el-table-column>
-      <!-- <el-table-column v-if="formInline.type==='1'"
+      <el-table-column v-if="formInline.type==='1'"
                        prop="param"
                        label="跳转url"
-                       width="100"></el-table-column> -->
+                       width="100"></el-table-column>
 
       <el-table-column fixed="right"
                        label="操作"
@@ -86,6 +86,17 @@
           <el-input v-model="postForm.sort"
                     style="width: auto;"
                     type="nummber" />
+        </el-form-item>
+        <el-form-item label="跳转url:">
+          <el-input v-model="postForm.param"
+                    style="width: 500px;"
+                    type="nummber" />
+          <span style="color:red; font-size:16px;">
+            <p>id就是每一篇文章的id值</p>
+            <p>资讯: ../component/index/dynamicInfo/dynamicInfo?id=121243075700001</p>
+            <p>面试: ../component/index/information/subject/subject?id=121111282100001</p>
+            <p>笔试: ../component/index/information1/subject/subject?id=121106472600001</p>
+          </span>
         </el-form-item>
 
         <el-form-item label="轮播图图像:">
@@ -136,14 +147,17 @@
         </el-form-item>
 
         <el-form-item label="param:"
+                      style="width: auto;"
                       v-if="putForm.type === '1' ">
-          <span style="color:red; font-size:10px;">参数不能随便填</span>
-          <p />
-          <p />
-
           <el-input v-model="putForm.param"
-                    style="width: auto;"
+                    style="width: 500px;"
                     type="text" />
+          <span style="color:red; font-size:16px;">
+            <p>id就是每一篇文章的id值</p>
+            <p>资讯: ../component/index/dynamicInfo/dynamicInfo?id=121243075700001</p>
+            <p>面试: ../component/index/information/subject/subject?id=121111282100001</p>
+            <p>笔试: ../component/index/information1/subject/subject?id=121106472600001</p>
+          </span>
         </el-form-item>
 
         <el-form-item label="排序序号:">
