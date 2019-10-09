@@ -10,7 +10,7 @@ export function getRequestUrl() {
 }
 export function getUploadUrl() {
     // return 'http://cloud.weiwochina.com/zuul/emba/upload/picUpload'
-    return 'http://cloud.weiwochina.com/zuul/base_project/upload/emba/picUpload'
+    return 'http://cloud.weiwochina.com/emba/upload/picUpload'
 }
 
 /**
