@@ -117,13 +117,13 @@
           <quill-editor v-model="postForm.text"
                         ref="myQuillEditor"
                         :options="editorOption"
-                        @change="onEditorChange($event)">
+                        >
           </quill-editor>
           <el-upload class="avatar-uploader"
                      ref="upload"
                      :action="upload_url"
                      :on-success="uploadSuccess"
-                     :on-error="uploadError">
+                     :headers="upload_head">
           </el-upload>
         </el-form-item>
         <hr>
@@ -185,13 +185,14 @@
           <quill-editor v-model="putForm.text"
                         ref="myQuillEditor"
                         :options="editorOption"
-                        @change="onEditorChange($event)">
+                        >
           </quill-editor>
           <el-upload class="avatar-uploader"
                      ref="upload"
                      :action="upload_url"
+                     :headers="upload_head"
                      :on-success="uploadSuccess"
-                     :on-error="uploadError">
+                     >
           </el-upload>
         </el-form-item>
 
@@ -209,14 +210,13 @@
 </template>
 
 <script>
-import { getSubjectList, deleteSubject, putSubject, postSubject } from "@/api/subject";
+import { getSubjectList, deleteSubject, putSubject, postSubject } from "@/api/subject"
 import { parseTime } from "@/utils/index"
-import { getRequestUrl, getUploadUrl } from '@/utils/index'
+import { getUploadUrl } from '@/utils/index'
 import { getToken } from '@/utils/auth.js'
 
 
 export default {
-  name: 'complaintlist',
   data () {
     let container = [
       ['bold', 'italic', 'underline'],
@@ -285,7 +285,6 @@ export default {
     this.getSubjectList()
   },
 
-
   methods: {
     // 富文本框图片上传显示
     uploadSuccess (response, file, fileList) {
@@ -293,10 +292,11 @@ export default {
       this.$refs.upload.clearFiles()
       // 获取富文本组件实例
       let quill = this.$refs.myQuillEditor.quill
+      console.log(file.response)
       // 如果上传成功
       if (file.response.code == 200) {
         console.log('返回的图片地址', file.response.data)
-        //获取光标所在位置
+        // 获取光标所在位置
         let length = quill.getSelection().index
         // 插入图片  res.info为服务器返回的图片地址
         quill.insertEmbed(length, 'image', file.response.data)
@@ -401,13 +401,13 @@ export default {
       })
 
     },
-    //处理banner上传图片
+    // 上传文件
     upload_success_banner (response, file, fileList) {
       if (file.response.code === '200') {
         this.fileList = [file.response.data]
         this.postForm.banner = file.response.data
       } else {
-        this.$message.error('上传错误!请重试');
+        this.$message.error('上传错误!请重试')
       }
     },
 

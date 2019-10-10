@@ -126,13 +126,14 @@
           <quill-editor v-model="putForm.text"
                         ref="myQuillEditor"
                         :options="editorOption"
-                        @change="onEditorChange($event)">
+                        >
           </quill-editor>
           <el-upload class="avatar-uploader"
                      ref="upload"
                      :action="upload_url"
                      :on-success="uploadSuccess"
-                     :on-error="uploadError">
+                     :headers="upload_head"
+                     >
           </el-upload>
         </el-form-item>
 
@@ -187,13 +188,13 @@
           <quill-editor v-model="postForm.text"
                         ref="myQuillEditor"
                         :options="editorOption"
-                        @change="onEditorChange($event)">
+                        >
           </quill-editor>
           <el-upload class="avatar-uploader"
                      ref="upload"
                      :action="upload_url"
                      :on-success="uploadSuccess"
-                     :on-error="uploadError">
+                     :headers="upload_head">
           </el-upload>
         </el-form-item>
         <hr>
@@ -305,9 +306,6 @@ export default {
       } else {
         this.$message.error('图片插入失败')
       }
-    },
-    uploadError() {
-
     },
     // 选择当前页面显示多少条数据的选择框发生改变
     handleSizeChange (e) {

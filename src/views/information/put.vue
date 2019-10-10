@@ -56,13 +56,13 @@
         <quill-editor v-model="form.text"
                       ref="myQuillEditor"
                       :options="editorOption"
-                      @change="onEditorChange($event)">
+                      >
         </quill-editor>
         <el-upload class="avatar-uploader"
                    ref="upload"
                    :action="upload_url"
                    :on-success="uploadSuccess"
-                   :on-error="uploadError">
+                   :headers="upload_head">
         </el-upload>
       </el-form-item>
 
