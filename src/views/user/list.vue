@@ -26,18 +26,18 @@
       <el-table-column prop="openid"
                        label="openid"
                        width="250"></el-table-column>
-      <el-table-column prop="nickName"
-                       label="昵称"
-                       width="200"></el-table-column>
+      <el-table-column prop="name"
+                       label="姓名"
+                       width="150"></el-table-column>
       <!-- <el-table-column prop="balance"
                        label="余额"
                        width="150"></el-table-column> -->
       <el-table-column prop="phone"
                        label="电话"
                        width="150"></el-table-column>
-      <el-table-column prop="name"
-                       label="真实姓名"
-                       width="150"></el-table-column>
+      <el-table-column prop="nickName"
+                       label="昵称"
+                       width="200"></el-table-column>
       <el-table-column label="头像"
                        width="150">
 

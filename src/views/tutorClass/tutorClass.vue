@@ -89,7 +89,7 @@
          style="margin:0px auto">
       <el-pagination @size-change="handleSizeChange"
                      @current-change="handleCurrentChange"
-                     :current-page="currentPage4"
+                     :current-page="currentPage"
                      :page-sizes="[10, 20, 30, 40]"
                      :page-size="pageSize"
                      layout="total, sizes, prev, pager, next, jumper"
@@ -126,18 +126,18 @@
         <el-table-column prop="openid"
                          label="openid"
                          width="250"></el-table-column>
-        <el-table-column prop="nickName"
-                         label="昵称"
-                         width="200"></el-table-column>
+        <el-table-column prop="name"
+                         label="姓名"
+                         width="150"></el-table-column>
         <!-- <el-table-column prop="balance"
                        label="余额"
                        width="150"></el-table-column> -->
         <el-table-column prop="phone"
                          label="电话"
                          width="150"></el-table-column>
-        <el-table-column prop="name"
-                         label="真实姓名"
-                         width="150"></el-table-column>
+        <el-table-column prop="nickName"
+                         label="昵称"
+                         width="200"></el-table-column>
         <el-table-column label="头像"
                          width="150">
 
@@ -163,11 +163,11 @@
 
       <div class="blockpage"
            style="margin:0px auto">
-        <el-pagination @size-change="handleSizeChange"
-                       @current-change="handleCurrentChange"
-                       :current-page="currentPage4"
+        <el-pagination @size-change="handleSizeChange1"
+                       @current-change="handleCurrentChange1"
+                       :current-page="currentPage1"
                        :page-sizes="[10, 20, 30, 40]"
-                       :page-size="pageSize"
+                       :page-size="pageSize1"
                        layout="total, sizes, prev, pager, next, jumper"
                        :total="total1">
         </el-pagination>
@@ -217,7 +217,8 @@ export default {
       },
       userData: [],
       tableData: [],
-      currentPage4: 1,
+      currentPage: 1,
+      currentPage1: 1,
       formInline: {
         username: '',
         region: ''
@@ -233,8 +234,9 @@ export default {
         curriculumId: null
       },
       // 搜索内容
-      name: null,
       id: null,
+      name: null,
+      openid: null,
       phone: null,
       total1: 0,
       pageindex1: 0, // 当前页
@@ -282,9 +284,20 @@ export default {
       this.pageindex = e - 1
       this.getCurriculumList()
     },
+    handleSizeChange1 (e) {
+      this.pageSize1 = e
+      this.getUserList(this.form.obj)
+    },
+    // 分页改变 e点击的页码  用户手动输入了页面然后go
+    handleCurrentChange1 (e) {
+      // console.log('当前页码', e)
+      this.pageindex1 = e - 1
+      this.getUserList(this.form.obj)
+    },
     // 搜索
     onSubmit1 () {
-      this.getUserList()
+      this.pageindex1 = 0
+      this.getUserList(this.form.obj)
     },
     //添加课程
     addClass (id) {
@@ -305,7 +318,7 @@ export default {
     // 获取用户列表
     getUserList (id) {
       this.form.obj = id
-      console.log('curriculumId', this.form.obj)
+      // console.log('curriculumId', this.form.obj)
       let query = {
         pageIndex: this.pageindex1,
         pageSize: this.pageSize1,
