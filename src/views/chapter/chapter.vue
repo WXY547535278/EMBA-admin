@@ -1,6 +1,6 @@
 <template>
   <!-- 资讯列表 -->
-  <div style="width:90%;margin-left:5%;margin-top:1%">
+  <div style="width:90%;margin-left:5%;margin-top:1%" v-loading="loading1">
     <!-- 搜索条件区域 -->
     <el-form :inline="true"
              :model="formInline"
@@ -101,13 +101,16 @@
         </el-table-column> -->
       </el-table>
     </el-dialog>
-    <!--  查看章节视频  -->
+    <!--  添加视频  -->
     <el-dialog title="添加视频"
                :visible.sync="showView1"
-               width="80%">
+               width="80%"
+               >
       <el-form ref="form"
                :model="form"
-               label-width="120px">
+               label-width="120px"
+               v-loading="loading"
+               element-loading-text="等待后台存储视频">
         <el-form-item label="视频名称"
                       :rules="[{ required: true, message: '不能为空'}]">
           <el-input v-model="form.name"
@@ -125,7 +128,8 @@
                      :limit=1
                      :on-success="upload_success_video"
                      :before-upload="beforeUploadVideo"
-                     :on-progress="uploadVideoProcess">
+                     :on-progress="uploadVideoProcess"
+                     :on-change="uploadVedio">
             <video v-if="form.video !='' && videoFlag == false"
                    :src="form.video"
                    class="avatar"
@@ -193,7 +197,9 @@ export default {
       // 搜索内容
       // openid: null
       curriculumId: null,
-      id: null
+      id: null,
+      loading: false,
+      loading1: false
     }
   },
 
@@ -251,6 +257,7 @@ export default {
     },
 
     getChapterList () {
+      this.loading1 = true
       let query = {
         pageIndex: this.pageindex,
         pageSize: this.pageSize,
@@ -258,6 +265,7 @@ export default {
         id: this.id
       }
       getChapterList(query).then(res => {
+        this.loading1 = false
         console.log(res)
         this.tableData = res.data
         this.total = res.pageTotal
@@ -310,12 +318,19 @@ export default {
       this.videoFlag = true
       // this.videoUploadPercent= 100
       this.videoUploadPercent = file.percentage.toFixed(0)
+      if(this.videoUploadPercent > 90) {
+        this.loading = true
+      }
+    },
+    uploadVedio (file, fileList) {
+      
     },
     //处理上传视频
     upload_success_video (response, file, fileList) {
       this.videoUploadPercent = 0
       if (file.response.code == 200) {
-        console.log(file.response)
+        this.loading = false
+        console.log('获取到的视频', file.response)
         this.$message.success('上传成功！')
         this.fileList = []
         this.form.video = file.response.data
