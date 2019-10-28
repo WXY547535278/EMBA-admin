@@ -318,7 +318,7 @@ export default {
       this.videoFlag = true
       // this.videoUploadPercent= 100
       this.videoUploadPercent = file.percentage.toFixed(0)
-      if(this.videoUploadPercent > 90) {
+      if(this.videoUploadPercent > 85) {
         this.loading = true
       }
     },
